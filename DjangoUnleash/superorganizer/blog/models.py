@@ -1,4 +1,5 @@
 from django.db import models
+from organizer.models import Tag,Startup
 
 class Post(models.Model):
 
@@ -6,3 +7,5 @@ class Post(models.Model):
     slug = models.SlugField()
     text = models.TextField()
     pub_date = models.DateField()
+    tags = models.ManyToManyField(Tag)
+    startups = models.ManyToManyField(Startup)
