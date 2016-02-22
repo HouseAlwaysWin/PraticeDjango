@@ -1,10 +1,21 @@
 from django.db import models
 
-class Tag(models.Models):
-    pass
+class Tag(models.Model):
 
-class Startups(models.Models):
-    pass
+    name = models.CharField(max_length=31)
+    slug = models.SlugField()
 
-class NewsLink(models.Models):
-    pass
+class Startups(models.Model):
+
+    name = models.CharField(max_length=31)
+    slug = models.SlugField()
+    description = models.TextField()
+    founded_date = models.DateField()
+    contact = models.EmailField()
+    website = models.URLField()
+
+class NewsLink(models.Model):
+
+    title = models.CharField(max_length=63)
+    pub_date = models.DateField()
+    link = models.URLField()
