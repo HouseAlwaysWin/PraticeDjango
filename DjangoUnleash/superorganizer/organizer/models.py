@@ -7,6 +7,8 @@ class Tag(models.Model):
                             unique=True,
                             help_text='A label for URL config.')
 
+    def __str__(self):
+        return self.name
 
 class Startups(models.Model):
 
@@ -20,9 +22,16 @@ class Startups(models.Model):
     website = models.URLField(max_length=255)
     tags = models.ManyToManyFiedl(Tag)
 
+    def __str__(self):
+        return self.name
+
 class NewsLink(models.Model):
 
     title = models.CharField(max_length=63)
     pub_date = models.DateField('date published')
     link = models.URLField(max_length=255)
     startup = models.ForeignKey(Startup)
+
+    def __str__(self):
+        return "{}:{}".format(self.startup,
+                              self.title)
