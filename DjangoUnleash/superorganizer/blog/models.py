@@ -1,5 +1,5 @@
 from django.db import models
-from organizer.models import Tag,Startup
+from organizer.models import Tag,Startups
 
 class Post(models.Model):
 
@@ -12,7 +12,7 @@ class Post(models.Model):
                                 auto_now_add=True)
     tags = models.ManyToManyField(Tag,
                                   related_name='blog_posts')
-    startups = models.ManyToManyField(Startup,
+    startups = models.ManyToManyField(Startups,
                                       related_name='blog_posts')
 
     def __str__(self):
