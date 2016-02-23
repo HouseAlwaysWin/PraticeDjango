@@ -8,7 +8,7 @@ class Tag(models.Model):
                             help_text='A label for URL config.')
 
     def __str__(self):
-        return self.name
+        return self.name.title()
 
 class Startups(models.Model):
 
