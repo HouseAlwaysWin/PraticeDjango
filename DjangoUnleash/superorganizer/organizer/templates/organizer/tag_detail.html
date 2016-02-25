@@ -1,7 +1,12 @@
-<h2>{{ tag.name }}</h2>
+<h2>{{ tag.name|title }}</h2>
 {% if tag.startups_set.all %}
 <section>
   <h3>Startups</h3>
+  <p>
+    Tag is associated with
+    {{ tag.startups_set.all|length }}
+    startsup{{ tag.startups.all|length|pluralize }}.
+  </p>
   <ul>
     {% for startup in tag.startups_set.all %}
     <li><a href="">{{ startups.name }}</a></li>
@@ -14,7 +19,7 @@
   <h3>Blog Posts</h3>
   <ul>
     {% for blog in tag.blog_posts.all %}
-    <li><a href="">{{ blog.title }}</a></li>
+    <li><a href="">{{ blog.title|title }}</a></li>
     {% endfor %}
   </ul>
 </section>
