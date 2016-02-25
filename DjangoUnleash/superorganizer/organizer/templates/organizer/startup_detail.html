@@ -38,10 +38,10 @@
   <section>
     <h3>Blog Post{{ startup.blog_posts.all|pluralize }}</h3>
     <ul>
-      {% for blog in startups.blog_posts.all %}
+      {% for post in startups.blog_posts.all %}
       <li>
 	<a href="">
-	  {{ blog.title|title }}</a>
+	  {{ post.title|title }}</a>
       </li>
       {% endfor %}
     </ul>
