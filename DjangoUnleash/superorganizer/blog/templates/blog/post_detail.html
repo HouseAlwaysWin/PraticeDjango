@@ -1,0 +1,47 @@
+<article>
+
+  <header>
+    <h2>{{ blog.title|title }}</h2>
+    <p>
+      Written on
+      <time datetime"{{ blog.pub_date|date:"Y-m-d" }}">
+	{{ blog.pub_date|date:"l, F j,Y" }}
+      </time>
+    </p>
+  </header>
+
+  {{ blog.text|linebreaks }}
+
+  {% if blog.startups.all or blog.tags.all %}
+  <footer>
+
+    {% if blog.startups.all %}
+    <section>
+      <h3>Startup{{ blog.startups.count|pluralize }}</h3>
+      <ul>
+	{% for startup in blog.startups.all %}
+	<li><a href="">
+	    {{ startup.name }}
+	</a></li>
+	{% endfor %}
+      </ul>
+    </section>
+    {% endfor %}
+
+    {% if blog.tags.all %}
+    <section>
+      <h3>Tag{{ blog.tags.count|pluralize }}</h3>
+      <ul>
+	{% for tag in blog.tags.all %}
+	<li><a href="">
+	    {{ tag.name|title }}
+	</a></li>
+	{% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+  </footer>
+  {% endif %}
+
+</article>
