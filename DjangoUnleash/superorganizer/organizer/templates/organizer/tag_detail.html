@@ -1,14 +1,26 @@
-<h2><!-- name of tag --> </h2>
+<h2>{{ tag.name }}</h2>
+{% if tag.startups_set.all %}
 <section>
   <h3>Startups</h3>
   <ul>
-    <!-- list of startups related to tag -->
+    {% for startup in tag.startups_set.all %}
+    <li><a href="">{{ startups.name }}</a></li>
+    {% endfor %}
   </ul>
 </section>
+{% endif %}
+{% if tag.blog_posts.all %}
 <section>
   <h3>Blog Posts</h3>
   <ul>
-    <!-- list of blog related to tag -->
+    {% for blog in tag.blog_posts.all %}
+    <li><a href="">{{ blog.title }}</a></li>
+    {% endfor %}
   </ul>
 </section>
-
+{% else %}
+<p>This Tag is not related to any blog posts.</p>
+{% endif %}
+{% if not tag.startups_set.all and not tag.blog_posts.all %}
+<p>This tag is not related to any content.</p>
+<% endif %}
