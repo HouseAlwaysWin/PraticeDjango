@@ -8,7 +8,7 @@
 <h2>{{ tag.name|title }}</h2>
 {% if tag.startups_set.all %}
 <section>
-  <h3>Startup{{ tag.startups_set.count|pluralize</h3>
+  <h3>Startup{{ tag.startups_set.count|pluralize }}</h3>
   <p>
     Tag is associated with
     {{ tag.startups_set.count }}
@@ -23,7 +23,7 @@
 {% endif %}
 {% if tag.blog_posts.all %}
 <section>
-  <h3>Blog Post{{ tag.startups_set.count|pluralize</h3>
+  <h3>Blog Post{{ tag.startups_set.count|pluralize }}</h3>
   <ul>
     {% for blog in tag.blog_posts.all %}
     <li><a href="">{{ blog.title|title }}</a></li>
@@ -35,5 +35,5 @@
 {% endif %}
 {% if not tag.startups_set.all and not tag.blog_posts.all %}
 <p>This tag is not related to any content.</p>
-<% endif %}
+{% endif %}
 {% endblock %}
