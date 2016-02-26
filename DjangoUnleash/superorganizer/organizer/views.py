@@ -8,3 +8,9 @@ def homepage(request):
     template = loader.get_template('organizer/tag_list.html')
     context = Context({'tag_list':tag_list})
     return HttpResponse(template.render(context))
+
+def tag_detail(request, slug):
+    tag = Tag.objects.get(slug__iexct=slug)
+    template = loader.get_template('organizer/tag_detail.html')
+    context = Context({'tag':tag})
+    return HttpResponse(template.render(context))
