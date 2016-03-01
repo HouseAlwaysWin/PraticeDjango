@@ -4,8 +4,6 @@ from .models import Post
 from django.views.generic import View
 
 
-
-
 def post_detail(request, year, month, slug, parent_template=None):
     post = get_object_or_404(
         Post,
@@ -19,7 +17,7 @@ def post_detail(request, year, month, slug, parent_template=None):
         {'parent_template':parent_template})
 
 class PostList(VIew):
-    template_name = 'blog/post_list.html'
+    template_name = ''
     
     
     def get(self, request, parent_template=None):
