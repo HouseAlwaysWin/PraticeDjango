@@ -18,7 +18,7 @@ def post_detail(request, year, month, slug, parent_template=None):
         {'post':post},
         {'parent_template':parent_template})
 
-class PostList(VIew):
+class PostList(View):
     template_name = ''
     
     
