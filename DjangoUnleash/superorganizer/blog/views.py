@@ -2,8 +2,10 @@ from django.shortcuts import (render,
                               get_object_or_404)
 from .models import Post
 from django.views.generic import View
+from django.views.decorators.http import require_http_methods
 
 
+@require_http_methods(['HEAD','GET'])
 def post_detail(request, year, month, slug, parent_template=None):
     post = get_object_or_404(
         Post,
