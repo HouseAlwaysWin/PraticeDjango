@@ -15,8 +15,8 @@ def post_detail(request, year, month, slug, parent_template=None):
     return render(
         request,
         'blog/post_detail.html',
-        {'post':post},
-        {'parent_template':parent_template})
+        {'post':post,
+         'parent_template':parent_template})
 
 class PostList(View):
     template_name = ''
@@ -26,5 +26,5 @@ class PostList(View):
         return render(
             request,
             self.template_name,
-            {'post_list':Post.objects.all()},
-            {'parent_template':parent_template})
+            {'post_list':Post.objects.all(),
+             'parent_template':parent_template})
