@@ -1,13 +1,10 @@
 from django.shortcuts import (render,
                               get_object_or_404)
 from .models import Post
+from django.views.generic import View
 
 
-def post_list(request):
-    return render(
-        request,
-        'blog/post_list.html',
-        {'post_list':Post.objects.all()})
+
 
 def post_detail(request, year, month, slug):
     post = get_object_or_404(
@@ -19,3 +16,10 @@ def post_detail(request, year, month, slug):
             request,
             'blog/post_detail.html',
             {'post':post})
+class PostList(VIew):
+    
+    def get(self, request):
+        return render(
+            request,
+            'blog/post_list.html',
+            {'post_list':Post.objects.all()})
