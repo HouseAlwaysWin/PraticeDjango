@@ -18,6 +18,11 @@ class TagForm(forms.ModelForm):
         if new_slug == 'create':
             raise ValidationError('Slug may not be "create".')
         return new_slug
+    def save(self):
+        new_tag = Tag.objects.create(
+            name=self.cleaned_data['name'],
+            slug=self.cleaned_data]'slug'])
+        return new_tag
     
 class SlugCleanMixin:
 
