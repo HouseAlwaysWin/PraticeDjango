@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Tag
+from .models import Tag, Startups, NewsLink
 
 class TagForm(forms.ModelForm):
     
@@ -18,3 +18,25 @@ class TagForm(forms.ModelForm):
         if new_slug == 'create':
             raise ValidationError('Slug may not be "create".')
         return new_slug
+    
+class SlugCleanMixin:
+
+    def clean_slug(self):
+        new_slug = (self.cleaned_data['slug'].lower())
+
+        if new_slug == 'create':
+            raise ValidationError('Slug may not be "create".')
+        return new_slug
+    
+class StartupForm(SlugCleanMixin,forms.ModelForm):
+
+    class Meta:
+        model = Tag
+        fields = '__all__'
+
+        
+class NewsLink(SlugCleanMixin,forms.ModelForm):
+
+    class Meta:
+        modelf = Tag
+        fields = '__all__'
