@@ -26,11 +26,6 @@ def tag_create(request):
         if form.is_valid():     # if form is valid then save data or render template
             new_tag = form.save()
             return redirect(new_tag)
-        else:
-            return render(
-                request,
-                'organizer/tag_form.html',
-                {'form':form})
     else:                       # Get method or others
         form = TagForm()
         return render(
