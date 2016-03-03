@@ -21,7 +21,7 @@ class TagForm(forms.ModelForm):
     def save(self):
         new_tag = Tag.objects.create(
             name=self.cleaned_data['name'],
-            slug=self.cleaned_data]'slug'])
+            slug=self.cleaned_data['slug'])
         return new_tag
     
 class SlugCleanMixin:

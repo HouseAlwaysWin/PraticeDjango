@@ -6,11 +6,11 @@
 
 {% block content %}
 <form
-   action="{% url organizer_tag_create' %}"
+   action="{% url 'organizer_tag_create' %}"
    method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <buton type="submit">
+  <button type="submit">
     Create Tag</button>
 </form>
 {% endblock %}

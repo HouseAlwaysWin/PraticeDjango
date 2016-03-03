@@ -1,7 +1,7 @@
 from django.shortcuts import (render,
                               get_object_or_404,
                               redirect)
-
+from django.views.generic import View
 from .forms import TagForm
 from .models import Tag, Startups
 
@@ -19,19 +19,25 @@ def tag_detail(request, slug):
         'organizer/tag_detail.html',
         {'tag':tag})
 
-def tag_create(request):
-    #Verified method whether POST or GET
-    if request.method == 'POST':
-        form = TagForm(request.POST)
-        if form.is_valid():     # if form is valid then save data or render template
-            new_tag = form.save()
+class TagCreate(View):
+    form_class =TagForm
+    template_name = 'organizer/tag_form.html'
+
+    def get(self, request):
+        request,
+        self.template_name,
+        {'form':self.form_class()}
+
+    def post(self, request):
+        bound_form = self.form_class(request.POST)
+        if bound_form.is_valid():    
+            new_tag = bound_form.save()
             return redirect(new_tag)
-    else:                       # Get method or others
-        form = TagForm()
-        return render(
-            request,
-            'organizer/tag_form.html',
-            {'form':form})
+        else:
+            return render(
+                request,
+                self.template_name,
+                {'form':bound_form})
 
 def startup_list(request):
     return render(
