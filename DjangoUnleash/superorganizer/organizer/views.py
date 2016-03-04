@@ -5,7 +5,9 @@ from django.views.generic import View
 from .forms import (TagForm,
                     StartupForm,
                     NewsLinkForm)
-from .models import Tag, Startups
+from .models import (Tag,
+                     Startups)
+from .utils import ObjectCreateMixin
 
 def tag_list(request):
     return render(
@@ -21,26 +23,9 @@ def tag_detail(request, slug):
         'organizer/tag_detail.html',
         {'tag':tag})
 
-class TagCreate(View):
+class TagCreate(ObjectCreateMixin,View):
     form_class = TagForm
     template_name = 'organizer/tag_form.html'
-
-    def get(self, request):
-        return render(
-            request,
-            self.template_name,
-            {'form':self.form_class()})
-
-    def post(self, request):
-        bound_form = self.form_class(request.POST)
-        if bound_form.is_valid():    
-            new_tag = bound_form.save()
-            return redirect(new_tag)
-        else:
-            return render(
-                request,
-                self.template_name,
-                {'form':bound_form})
 
 def startup_list(request):
     return render(
@@ -56,44 +41,11 @@ def startup_detail(request, slug):
         'organizer/startup_detail.html',
         {'startup':startup})
 
-class StartupCreate(View):
+class StartupCreate(ObjectCreateMixin,View):
     form_class = StartupForm
     template_name = 'organizer/startup_form.html'
 
-    def get(self, request):
-        return render(
-            request,
-            self.template_name,
-            {'form':self.form_class()})
 
-    def post(self, request):
-        bound_form = self.form_class(request.POST)
-        if bound_form.is_valid():
-            new_startup = bound_form.save()
-            return redirect(new_startup)
-        else:
-            return render(
-                request,
-                self.template_name,
-                {'form':bound_form})
-
-class NewsLinkCreate(View):
+class NewsLinkCreate(ObjectCreateMixin,View):
     form_class = NewsLinkForm
     template_name = 'organizer/newslink_form.html'
-
-    def get(self, request):
-        return render(
-            request,
-            self.template_name,
-            {'form':self.form_class()})
-
-    def post(self, request):
-        bound_form = self.form_class(request.POST)
-        if bound_form.is_valid():
-            new_newslink = bound_form.save()
-            return redirect(new_newslink)
-        else:
-            return render(
-                request,
-                self.template_name,
-                {'form':bound_form})
