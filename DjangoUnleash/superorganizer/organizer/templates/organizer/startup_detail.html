@@ -6,13 +6,12 @@
 
 {% block content %}
 <article>
-
   <h2>{{ startup.name }}</h2>
   <dl>
     <dt>Date Founded</dt>
     <dd>{{ startup.founded_date|date:"F jS,Y" }}</dd>
     <dt>Website</dt>
-    <dd>{{ startup.website }}</dd>
+    <dd>{{ startup.website|urlize }}</dd>
     <dt>Contact</dt>
     <dd>{{ startup.contact }}</dd>
     
@@ -24,10 +23,10 @@
     {% endfor %}
 
   </dl>
+  
+<p>{{ startup.description|linebreaks }}</p>
 
-  {{ startup.description|linebreaks }}
-
-  {% if startup.newslink_set.all %}
+{% if startup.newslink.all %}
   <section>
     <h3>Recent News</h3>
     <p>
@@ -42,15 +41,15 @@
       {% endfor %}
     </ul>
   </section>
-  {% endif %}
+{% endif %}
 
-  {% if startups.blog_posts.all %}
+  {% if startup.blog_posts.all %}
   <section>
     <h3>Blog Post{{ startup.blog_posts.all|pluralize }}</h3>
     <ul>
-      {% for post in startups.blog_posts.all %}
+      {% for post in startup.blog_posts.all %}
       <li>
-	<a href="">
+	<a href="{{ post.get_absolute_url }}">
 	  {{ post.title|title }}</a>
       </li>
       {% endfor %}

@@ -36,12 +36,12 @@ class SlugCleanMixin:
 class StartupForm(SlugCleanMixin,forms.ModelForm):
 
     class Meta:
-        model = Tag
+        model = Startups
         fields = '__all__'
 
         
 class NewsLinkForm(SlugCleanMixin,forms.ModelForm):
 
     class Meta:
-        modelf = Tag
+        model = Tag
         fields = '__all__'

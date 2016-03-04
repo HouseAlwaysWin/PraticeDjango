@@ -31,8 +31,8 @@ urlpatterns = [
     
     url(r'startup/(?P<slug>[\w\-]+)/$',
         startup_detail,
-        name='organizer_startup_detail'),
-
+        name='organizer_startup_detail'),        
+    
     url(r'^newslink/create/$',
         NewsLinkCreate.as_view(),
         name='organizer_newslink_create'),

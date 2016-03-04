@@ -54,7 +54,7 @@ def startup_detail(request, slug):
     return render(
         request,
         'organizer/startup_detail.html',
-        {'startups_detail':startup})
+        {'startup':startup})
 
 class StartupCreate(View):
     form_class = StartupForm
