@@ -14,6 +14,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name.title()
 
+
     def get_absolute_url(self):
         return reverse('organizer_tag_detail',
                        kwargs={'slug':self.slug})
@@ -51,7 +52,10 @@ class NewsLink(models.Model):
     def __str__(self):
         return "{}:{}".format(self.startup,
                               self.title)
-
+    
+    def get_absolute_url(self):
+        return self.startup.get_absolute_url()
+    
     class Meta:
         verbose_name = "news article"
 

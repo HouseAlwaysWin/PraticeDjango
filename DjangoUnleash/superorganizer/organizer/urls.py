@@ -4,7 +4,8 @@ from .views import (tag_list,
                     tag_detail,
                     TagCreate,
                     startup_list,
-                    startup_detail)
+                    startup_detail,
+                    StartupCreate)
 
 urlpatterns = [
     url(r'tag/$',
@@ -22,6 +23,10 @@ urlpatterns = [
     url(r'^startup/$',
         startup_list,
         name='organizer_startup_list'),
+
+    url(r'^startup/create/$',
+        StartupCreate.as_view(),
+        name='organizer_startup_create'),
     
     url(r'startup/(?P<slug>[\w\-]+)/$',
         startup_detail,
