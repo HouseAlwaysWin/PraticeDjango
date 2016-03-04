@@ -1,3 +1,10 @@
+{% extends parent_template|default:"organizer/base_organizer.html" %}
+
+{% block title %}
+{{ block.super }} - {{ startup.name}}
+{% endblock %}
+
+{% block content %}
 <article>
 
   <h2>{{ startup.name }}</h2>
@@ -23,6 +30,9 @@
   {% if startup.newslink_set.all %}
   <section>
     <h3>Recent News</h3>
+    <p>
+      <a href="{% url 'organizer_newslink_create' %}">
+	Add Article</a></p>
     <ul>
       {% for newslink in startup.newslink_set.all %}
       <li>
@@ -49,5 +59,5 @@
   {% endif %}
 
 </article>
-
+{% endblock %}
 	

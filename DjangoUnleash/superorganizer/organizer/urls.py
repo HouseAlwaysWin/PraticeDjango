@@ -2,10 +2,11 @@ from django.conf.urls import url
 
 from .views import (tag_list,
                     tag_detail,
-                    TagCreate,
                     startup_list,
                     startup_detail,
-                    StartupCreate)
+                    TagCreate,
+                    StartupCreate,
+                    NewsLinkCreate)
 
 urlpatterns = [
     url(r'tag/$',
@@ -31,4 +32,8 @@ urlpatterns = [
     url(r'startup/(?P<slug>[\w\-]+)/$',
         startup_detail,
         name='organizer_startup_detail'),
+
+    url(r'^newslink/create/$',
+        NewsLinkCreate.as_view(),
+        name='organizer_newslink_create'),
     ]

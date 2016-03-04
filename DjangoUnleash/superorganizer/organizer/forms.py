@@ -40,7 +40,7 @@ class StartupForm(SlugCleanMixin,forms.ModelForm):
         fields = '__all__'
 
         
-class NewsLink(SlugCleanMixin,forms.ModelForm):
+class NewsLinkForm(SlugCleanMixin,forms.ModelForm):
 
     class Meta:
         modelf = Tag
