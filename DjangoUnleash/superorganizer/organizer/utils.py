@@ -1,4 +1,4 @@
-form django.shortcuts import (redirect,
+from django.shortcuts import (redirect,
                               render)
 
 class ObjectCreateMixin:
