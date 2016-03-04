@@ -1,10 +1,10 @@
-from django import form
+from django import forms
 from .models import Post
 
-class PostForm(form.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        field = '__all__'
+        fields = '__all__'
 
     def clean_slug(self):
         return self.cleaned_data['slug'].lower()

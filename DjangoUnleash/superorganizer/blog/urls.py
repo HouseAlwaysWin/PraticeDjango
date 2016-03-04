@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
 from .views import (PostList,
+                    PostCreate,
                     post_detail)
 
 urlpatterns = [
@@ -8,6 +9,10 @@ urlpatterns = [
             template_name='blog/post_list.html'),
         {'parent_template':'base.html'},
         name='blog_post_list'),
+
+    url(r'^create/$',
+        PostCreate.as_view(),
+        name='blog_post_create'),
     
     url(r'^(?P<year>\d{4})/'
         r'(?P<month>\d{1,2})/'
