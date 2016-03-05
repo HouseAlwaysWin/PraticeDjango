@@ -59,7 +59,7 @@ class PostUpdate(View):
     model = Post
     template_name = 'blog/post_form_update.html'
 
-    def get_object(self, request, year, month, slug):
+    def get_object(self, year, month, slug):
         return get_object_or_404(
             self.model,
             pub_date__year=year,
@@ -67,7 +67,7 @@ class PostUpdate(View):
             slug=slug)
 
     def get(self, request, year, month, slug):
-        post = self.get_object(year, month,slug)
+        post = self.get_object(year, month, slug)
         context = {'form':self.form_class(instance=post),
                    'post':post,}
         return render(

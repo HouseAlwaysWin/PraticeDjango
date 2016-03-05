@@ -7,3 +7,4 @@ __pycache__
 [.#]*.py
 [.#]*.html
 *.py~ 
+DjangoUnleash/superorganizer/organizer/migrations

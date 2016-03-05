@@ -6,7 +6,8 @@ from .forms import (TagForm,
                     StartupForm,
                     NewsLinkForm)
 from .models import (Tag,
-                     Startups)
+                     Startups,
+                     NewsLink)
 from .utils import ObjectCreateMixin
 
 def tag_list(request):
@@ -49,3 +50,36 @@ class StartupCreate(ObjectCreateMixin,View):
 class NewsLinkCreate(ObjectCreateMixin,View):
     form_class = NewsLinkForm
     template_name = 'organizer/newslink_form.html'
+
+class NewsLinkUpdate(View):
+    form_class = NewsLinkForm
+    template_name = (
+        'organizer/newslink_form_update.html')
+
+    def get(self, request, pk):
+        newslink = get_object_or_404(
+            NewsLink, pk=pk)
+        context = {
+            'form':self.form_class(instance=newlink),
+            'newslink':newslink,}
+        return render(
+            request,
+            self.template_name,
+            context)
+
+    def post(self, request, pk):
+        newslink = get_object_404(
+            NewsLink, pk=pk)
+        bound_form = self.form_class(
+            reqeust.POST, instance=newslink)
+        if bound_form.is_valid():
+            new_newslink = bound_form.save()
+            return redirect(new_newslink)
+        else:
+            context = {
+                'form':bound_form,
+                'newslink':newslink,}
+            return render(
+                request,
+                self.template_name,
+                context)

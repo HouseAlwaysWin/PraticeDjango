@@ -14,7 +14,7 @@
     <dd>{{ startup.website|urlize }}</dd>
     <dt>Contact</dt>
     <dd>{{ startup.contact }}</dd>
-    
+
     <dt>Tag{{ startup.tags.count|pluralize }}</dt>
     {% for tag in startup.tags.all %}
     <dd><a href="{{ tag.get_absolute_url }}">
@@ -23,7 +23,7 @@
     {% endfor %}
 
   </dl>
-  
+
 <p>{{ startup.description|linebreaks }}</p>
 
 {% if startup.newslink.all %}
@@ -37,6 +37,11 @@
       <li>
 	<a href="{{ newslink }}">
 	  {{ newslink.title|title }}</a>
+        <ul>
+          <li>
+            <a href="{{ newslink.get_update_url }}">
+              Edit Link</a></li>
+        </ul>
       </li>
       {% endfor %}
     </ul>
