@@ -1,19 +1,19 @@
 {% extends parent_template|default:"organizer/base_organizer.html" %}
 
 {% block title %}
-{{ block.super }} - Create NewsLink
+{{ block.super }}
 {% endblock %}
 
 {% block content %}
 <div>
   <div>
     <form
-       action="{% url 'organizer_newslink_create' %}"
+       action="{{ newslink.get_update_url }}"
        method="post">
       {% csrf_token %}
       {{ form.as_p }}
       <button type="submmit">
-	Link Article</button>
+        Update Article Link</button>
     </form>
   </div>
 </div>

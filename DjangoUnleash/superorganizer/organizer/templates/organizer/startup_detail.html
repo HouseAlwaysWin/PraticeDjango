@@ -26,13 +26,12 @@
 	{{ tag.name|title }}
     </a></dd>
     {% endfor %}
-
   </dl>
 
 <p>{{ startup.description|linebreaks }}</p>
 
-{% if startup.newslink.all %}
-  <section>
+{% if startup.newslink_set.all %}
+<section>
     <h3>Recent News</h3>
     <p>
       <a href="{% url 'organizer_newslink_create' %}">
@@ -50,7 +49,7 @@
       </li>
       {% endfor %}
     </ul>
-  </section>
+</section>
 {% endif %}
 
   {% if startup.blog_posts.all %}

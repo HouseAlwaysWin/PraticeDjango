@@ -89,3 +89,25 @@ class PostUpdate(View):
                 request,
                 self.template_name,
                 context)
+class PostDelete(View):
+
+    def get(self, request, year, month, slug):
+        post = get_object_or_404(
+            Post,
+            pub_date__year=year,
+            pub_date__month=month,
+            slug__iexact=slug)
+        return render(
+            request,
+            'blog/post_confirm_delete.html',
+            {'post':post})
+    
+    def post(self, request, year, month, slug):
+
+        post = get_object_or_404(
+            Post,
+            pub_date__year=year,
+            pub_date__month=month,
+            slug__iexact=slug)
+        post.delete()
+        return redirect('blog_post_list')
