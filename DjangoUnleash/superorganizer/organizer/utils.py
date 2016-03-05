@@ -9,7 +9,7 @@ class ObjectCreateMixin:
         return render(
             request,
             self.template_name,
-            {'form':self.from_class()})
+            {'form':self.form_class()})
     def post(self, request):
         bound_form = self.form_class(request.POST)
         if bound_form.is_valid():
