@@ -22,6 +22,10 @@ class Tag(models.Model):
         return reverse('organizer_tag_update',
                        kwargs={'slug':self.slug})
 
+    def get_delete_url(self):
+        return reverse('organizer_tag_delete',
+                       kwargs={'slug':self.slug})
+
 class Startups(models.Model):
 
     name = models.CharField(max_length=31, db_index=True)
@@ -43,6 +47,10 @@ class Startups(models.Model):
 
     def get_update_url(self):
         return reverse('organizer_startup_update',
+                       kwargs={'slug':self.slug})
+
+    def get_delete_url(self):
+        return reverse('organizer_startup_delete',
                        kwargs={'slug':self.slug})
 
     class Meta:
@@ -67,6 +75,12 @@ class NewsLink(models.Model):
         return reverse(
             'organizer_newslink_update',
             kwargs={'pk':self.pk})
+
+    def get_delete_url(self):
+        return reverse(
+            'organizer_newslink_delete',
+            kwargs={'pk':self.pk})
+
     class Meta:
         verbose_name = "news article"
 

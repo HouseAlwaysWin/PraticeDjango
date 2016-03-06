@@ -6,13 +6,16 @@ from .views import (tag_list,
                     startup_detail,
                     TagCreate,
                     TagUpdate,
+                    TagDelete,
                     StartupCreate,
                     StartupUpdate,
+                    StartupDelete,
                     NewsLinkCreate,
-                    NewsLinkUpdate)
+                    NewsLinkUpdate,
+                    NewsLinkDelete)
 
 urlpatterns = [
-    url(r'tag/$',
+    url(r'^tag/$',
         tag_list,
         name='organizer_tag_list'),
 
@@ -28,6 +31,10 @@ urlpatterns = [
         TagUpdate.as_view(),
         name='organizer_tag_update'),
 
+    url(r'^tag/(?P<slug>[\w\-]+)/delete/$',
+        TagDelete.as_view(),
+        name='organizer_tag_delete'),
+
     url(r'^startup/$',
         startup_list,
         name='organizer_startup_list'),
@@ -36,19 +43,28 @@ urlpatterns = [
         StartupCreate.as_view(),
         name='organizer_startup_create'),
 
-    url(r'startup/(?P<slug>[\w\-]+)/$',
+    url(r'^startup/(?P<slug>[\w\-]+)/$',
         startup_detail,
         name='organizer_startup_detail'),
 
-    url(r'startup/(?P<slug>[\w\-]+)/update/$',
+    url(r'^startup/(?P<slug>[\w\-]+)/update/$',
         StartupUpdate.as_view(),
         name='organizer_startup_update'),
+
+    url(r'^startup/(?P<slug>[\w\-]+)/delete/$',
+        StartupDelete.as_view(),
+        name='organizer_startup_delete'),
 
     url(r'^newslink/create/$',
         NewsLinkCreate.as_view(),
         name='organizer_newslink_create'),
 
-    url(r'^newlink/update/(?P<pk>\d+)/$',
+    url(r'^newslink/update/(?P<pk>\d+)/$',
         NewsLinkUpdate.as_view(),
         name='organizer_newslink_update'),
+
+    url(r'^newslink/delete/(?P<pk>\d+)/$',
+        NewsLinkDelete.as_view(),
+        name='organizer_newslink_delete'),
+
     ]

@@ -1,3 +1,10 @@
+{% extends parent_template|default:"base_blog.html" %}
+
+{% block title %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
 <article>
 
   <header>
@@ -40,7 +47,7 @@
       <h3>Tag{{ post.tags.count|pluralize }}</h3>
       <ul>
 	{% for tag in post.tags.all %}
-	<li><a href="{{ tag.get_absoulte_url }}">
+	<li><a href="{{ tag.get_absolute_url }}">
 	    {{ tag.name|title }}
 	</a></li>
 	{% endfor %}
@@ -52,3 +59,4 @@
   {% endif %}
 
 </article>
+{% endblock %}

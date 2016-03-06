@@ -1,6 +1,9 @@
 from django.shortcuts import (redirect,
                               render,
                               get_object_or_404)
+from django.http import HttpResponseRedirect
+
+
 
 class ObjectCreateMixin:
     form_class = None
@@ -54,3 +57,23 @@ class ObjectUpdateMixin:
                 request,
                 self.template_name,
                 context)
+
+class ObjectDeleteMixin:
+    model = None
+    success_url =''
+    template_name = ''
+
+    def get(self, request, slug):
+        obj = get_object_or_404(
+            self.model, slug__iexact=slug)
+        context = { self.model.__name__.lower(): obj,}
+        return render(
+            request,
+            self.template_name,
+            context)
+
+    def post(self, request, slug):
+        obj = get_object_or_404(
+            self.model, slug__iexact=slug)
+        obj.delete()
+        return HttpResponseRedirect(self.success_url)
