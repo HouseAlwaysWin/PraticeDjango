@@ -36,7 +36,7 @@ class Startups(models.Model):
     founded_date = models.DateField('date founded')
     contact = models.EmailField(max_length=255)
     website = models.URLField(max_length=255)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.name
