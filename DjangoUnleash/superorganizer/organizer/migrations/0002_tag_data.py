@@ -8,7 +8,7 @@ def add_tag_data(apps, schema_editor):
     Tag = apps.get_model('organizer','Tag')
     for tag_name, tag_slug in TAGS:
         Tag.objects.create(
-            name=tag_name
+            name=tag_name,
             slug=tag_slug)
 
 def remove_tag_data(apps, schema_editor):
@@ -26,5 +26,5 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunPython(
             add_tag_data,
-            reomve_tag_data)
+            remove_tag_data)
     ]
