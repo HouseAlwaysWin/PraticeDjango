@@ -87,3 +87,5 @@ class NewsLink(models.Model):
 
         ordering = ['-pub_date']
         get_latest_by = 'pub_date'
+
+        unique_together = ('slug','startup')
