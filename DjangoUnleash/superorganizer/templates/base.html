@@ -33,8 +33,25 @@
 	  <li>
 	    <a href="{% url 'organizer_tag_list' %}">
 	      Tags</a></li>
+	  <li>
+	    <a href="{% url 'contact' %}">
+	      Contact</a></li>
 	</ul>
       </nav>
+      {% if messages %}
+      <div>
+	<div>
+	  <ul>
+	    {% for message in message %}
+	    {% if message.tags %}
+	    <li class ="{{ message.tags }}">
+	      {% else %}
+	    <li>
+	      {% enfif %}
+	      {{ message }}</li>
+	    {% endfor %}
+      </ul></div></div>
+      {% endif %}
       <main>
 	{% block content %}
 	This is default content!
