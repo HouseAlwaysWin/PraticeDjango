@@ -5,20 +5,12 @@ from django.db import migrations, models
 
 from datetime import date
 STARTUPS =[
-    {
-        "name":"Archnobots",
-        "slug":"archnobots",
-        "contact":"contact@archnobots.com",
-        "description":"Remote-controlled internet-enabled",
-        "founded_date":date(2014, 10, 31),
-        "tags":["mobile","augmented-reality"],
-        "website":"http://frightenyourroommate.com/",
-    },
+    
 ]
 
 def add_startup_data(apps, schema_editor):
     Startup = apps.get_model(
-        'organizer','Startup')
+        'organizer','Startups')
     Tag = apps.get_model('organizer','Tag')
 
     for startup in STARTUPS:
@@ -30,10 +22,10 @@ def add_startup_data(apps, schema_editor):
             founded_date=startup['founded_date'],
             website=startup['website'])
         
-    for tag_slug in startup['tag']:
-        startup_object.tags.add(
-            Tag.objects.get(
-                slug=tag_slug)
+        for tag_slug in startup['tags']:
+            startup_object.tags.add(
+                Tag.objects.get(
+                    slug=tag_slug)
             )
 
 def remove_startup_data(apps, shema_editor):

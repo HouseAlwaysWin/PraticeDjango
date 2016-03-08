@@ -3,6 +3,10 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 
+TAGS = (
+    ("augmented reality", "augmented-reality"),
+ )
+
 
 def add_tag_data(apps, schema_editor):
     Tag = apps.get_model('organizer','Tag')
@@ -10,6 +14,7 @@ def add_tag_data(apps, schema_editor):
         Tag.objects.create(
             name=tag_name,
             slug=tag_slug)
+    
 
 def remove_tag_data(apps, schema_editor):
     Tag = apps.get_model('organizer','Tag')

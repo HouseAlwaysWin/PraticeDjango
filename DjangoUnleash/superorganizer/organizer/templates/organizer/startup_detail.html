@@ -42,7 +42,7 @@
     <ul>
       {% for newslink in startup.newslink_set.all %}
       <li>
-	<a href="{{ newslink }}">
+	<a href="{{ newslink.link }}">
 	  {{ newslink.title|title }}</a>
         <ul>
           <li>
