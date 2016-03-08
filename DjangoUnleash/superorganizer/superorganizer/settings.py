@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'organizer',
     'blog',
+    'contact',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,6 +85,16 @@ DATABASES = {
     }
 }
 
+# Email
+# https://docs.djangoproject.com/en/1.8/topics/email/
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SERVER_EMAIL = 'contact@django-unleashed.com'
+DEGAULT_FROM_EMAIL = 'no-reply@djanogo-unleashed.com'
+EMAIL_SUBJECT_PREFIX = '[Startup Organizer]'
+MANAGER = (
+    ('Us','ourselves@django-unleashed.com'),
+    )
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
