@@ -2,8 +2,9 @@ from django.shortcuts import (render,
                               redirect)
 from django.contrib.messages import success
 from django.views.generic import View
+from .forms import ContactForm
 
-class ContaceView(View):
+class ContactView(View):
     form_class = ContactForm
     template_name = 'contact/contact_form.html'
 

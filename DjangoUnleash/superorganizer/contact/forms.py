@@ -16,7 +16,7 @@ class ContactForm(forms.Form):
     reason= forms.ChoiceField(
         choices=REASON_CHOICES,
         initial=FEEDBACK)
-    email = form.EmailField(
+    email = forms.EmailField(
         initial='martionwang7963@gmail.com')
     text = forms.CharField(widget=forms.Textarea)
 
@@ -26,7 +26,7 @@ class ContactForm(forms.Form):
         reason_dict = dict(self.REASON_CHOICES)
         full_reason = reason_dict.get(reason)
         email = self.cleaned_data.get('email')
-        text = self.cleaned_dtat.get('text')
+        text = self.cleaned_data.get('text')
         body = 'Message From:{}\n\n{}\n'.format(email, text)
 
         try:
