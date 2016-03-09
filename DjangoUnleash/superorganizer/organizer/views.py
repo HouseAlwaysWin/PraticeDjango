@@ -40,8 +40,9 @@ class StartupList(View):
             startups,self.paginate_by)
         page = paginator.page(1)
         context = {
+            'is_paginated':page.has_other_pages(),
             'paginator':paginator,
-            'startups_list':page
+            'startups_list':page,
         }
         return render(
             request,

@@ -29,7 +29,7 @@
   {% endfor %}
 </ul>
 
-{% if startups_list.has_other_paes %}
+{% if is_paginated %}
 <ul>
   {% if startups_list.has_previous %}
   <li>
@@ -39,7 +39,7 @@
   {% endif %}
   <li>
     Page {{ startups_list.number }}
-    of {{ startups_list.paginator.num_pages }}
+    of {{ paginator.num_pages }}
   </li>
   {% if startups_list.has_next %}
   <li>
