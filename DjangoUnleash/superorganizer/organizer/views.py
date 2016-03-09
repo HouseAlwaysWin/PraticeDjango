@@ -3,6 +3,7 @@ from django.shortcuts import (render,
                               redirect)
 from django.views.generic import View
 from django.core.urlresolvers import reverse_lazy
+from django.core.paginator import Paginator
 
 from .forms import (TagForm,
                     StartupForm,
@@ -30,11 +31,18 @@ def tag_detail(request, slug):
 
 
 class StartupList(View):
+    paginate_by = 5
     template_name = 'organizer/startup_list.html'
 
     def get(self, request):
-        startups = Startup.objects.all()
-        context = {'startups_list': startups}
+        startups = Startups.objects.all()
+        paginator = Paginator(
+            startups,self.paginate_by)
+        page = paginator.page(1)
+        context = {
+            'paginator':paginator,
+            'startups_list':page
+        }
         return render(
             request,
             self.template_name,

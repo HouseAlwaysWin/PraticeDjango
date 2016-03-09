@@ -28,4 +28,25 @@
   <li><em>No Startups Available</em></li>
   {% endfor %}
 </ul>
+
+{% if startups_list.has_other_paes %}
+<ul>
+  {% if startups_list.has_previous %}
+  <li>
+    <a href="">
+      Previous</a>
+  </li>
+  {% endif %}
+  <li>
+    Page {{ startups_list.number }}
+    of {{ startups_list.paginator.num_pages }}
+  </li>
+  {% if startups_list.has_next %}
+  <li>
+    <a href="">
+      Next</a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}
 {% endblock %}
