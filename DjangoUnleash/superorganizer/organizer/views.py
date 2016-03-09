@@ -2,7 +2,8 @@ from django.shortcuts import (render,
                               get_object_or_404,
                               redirect)
 from django.views.generic import View
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import (reverse,
+                                      reverse_lazy)
 from django.core.paginator import (Paginator,
                                    EmptyPage,
                                    PageNotAnInteger)
@@ -17,11 +18,60 @@ from .utils import (ObjectCreateMixin,
                     ObjectUpdateMixin,
                     ObjectDeleteMixin)
 
-def tag_list(request):
-    return render(
-        request,
-        'organizer/tag_list.html',
-        {'tag_list':Tag.objects.all()})
+
+class TagList(View):
+    template_name = 'organizer/tag_list.html'
+
+    def get(self, request, page_number=None):
+        tags = Tag.objects.all()
+        context = {
+            'tag_list':tags,}
+        return render(
+            request,
+            self.template_name,
+            context)
+
+class TagPageList(View):
+    paginate_by = 5
+    template_name = 'organizer/tag_list.html'
+
+    def get(self ,request, page_number):
+        tags = Tag.objects.all()
+        paginator = Paginator(
+            tags,
+            self.paginate_by)
+        try:
+            page = paginator(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+
+        if page.has_previous():
+            prev_url = reverse(
+                'organizer_tag_page',
+                args=(page.previous_page_number(),))
+        else:
+            prev_url = None
+
+        if page.has_next():
+            next_url = reverse(
+                'organizer_tag_page',
+                args=(page.next_page_number(),))
+        else:
+            next_url = None
+
+        context = {
+            'is_paginated':page.has_other_pages(),
+            'next_page_url':next_url,
+            'paginator':paginator,
+            'previous_page_url':prev_url,
+            'tag_list':page,}
+
+        return render(
+            request,
+            self.template_name.
+            context)
 
 def tag_detail(request, slug):
     tag = get_object_or_404(
@@ -71,7 +121,7 @@ class StartupList(View):
             'next_page_url':next_url,
             'previous_page_url':prev_url,
             'paginator':paginator,
-            'startups_list':page,
+            'tag_list':page,
         }
         return render(
             request,
