@@ -1,29 +1,29 @@
 from django.conf.urls import url
 
-from organizer.views import (startup_list,
-                   startup_detail,
-                   StartupCreate,
-                   StartupUpdate,
-                   StartupDelete)
+from organizer.views import (StartupList,
+                             startup_detail,
+                             StartupCreate,
+                             StartupUpdate,
+                             StartupDelete)
 
 urlpatterns = [
-    url(r'^startup/$',
-        startup_list,
+    url(r'^$',
+        StartupList.as_view(),
         name='organizer_startup_list'),
 
-    url(r'^startup/create/$',
+    url(r'^create/$',
         StartupCreate.as_view(),
         name='organizer_startup_create'),
-
-    url(r'^startup/(?P<slug>[\w\-]+)/$',
+    
+    url(r'^(?P<slug>[\w\-]+)/$',
         startup_detail,
         name='organizer_startup_detail'),
 
-    url(r'^startup/(?P<slug>[\w\-]+)/update/$',
+    url(r'^(?P<slug>[\w\-]+)/update/$',
         StartupUpdate.as_view(),
         name='organizer_startup_update'),
 
-    url(r'^startup/(?P<slug>[\w\-]+)/delete/$',
+    url(r'^(?P<slug>[\w\-]+)/delete/$',
         StartupDelete.as_view(),
         name='organizer_startup_delete'),
 ]

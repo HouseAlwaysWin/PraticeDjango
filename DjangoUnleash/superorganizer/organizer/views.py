@@ -28,11 +28,17 @@ def tag_detail(request, slug):
         'organizer/tag_detail.html',
         {'tag':tag})
 
-def startup_list(request):
-    return render(
-        request,
-        'organizer/startup_list.html',
-        {'startups_list':Startups.objects.all()})
+
+class StartupList(View):
+    template_name = 'organizer/startup_list.html'
+
+    def get(self, request):
+        startups = Startup.objects.all()
+        context = {'startups_list': startups}
+        return render(
+            request,
+            self.template_name,
+            context)
 
 def startup_detail(request, slug):
     startup = get_object_or_404(
