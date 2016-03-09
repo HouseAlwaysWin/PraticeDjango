@@ -101,7 +101,7 @@ class PostDelete(View):
             request,
             'blog/post_confirm_delete.html',
             {'post':post})
-    
+
     def post(self, request, year, month, slug):
 
         post = get_object_or_404(

@@ -33,7 +33,7 @@
 <ul>
   {% if startups_list.has_previous %}
   <li>
-    <a href="">
+    <a href="?page={{ startups_list.previous_page_number }}">
       Previous</a>
   </li>
   {% endif %}
@@ -43,7 +43,7 @@
   </li>
   {% if startups_list.has_next %}
   <li>
-    <a href="">
+    <a href="?page={{ startups_list.next_page_number }}">
       Next</a>
   </li>
   {% endif %}

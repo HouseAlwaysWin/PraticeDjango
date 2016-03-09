@@ -7,8 +7,7 @@ from .views import (PostList,
 
 urlpatterns = [
     url(r'^$',
-        PostList.as_view(
-            template_name='blog/post_list.html'),
+        PostList.as_view(template_name='blog/post_list.html'),
         {'parent_template':'base.html'},
         name='blog_post_list'),
 
