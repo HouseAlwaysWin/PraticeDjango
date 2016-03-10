@@ -22,7 +22,7 @@ from .utils import (ObjectCreateMixin,
 class TagList(View):
     template_name = 'organizer/tag_list.html'
 
-    def get(self, request, page_number=None):
+    def get(self, request):
         tags = Tag.objects.all()
         context = {
             'tag_list':tags,}
@@ -37,27 +37,31 @@ class TagPageList(View):
 
     def get(self ,request, page_number):
         tags = Tag.objects.all()
-        paginator = Paginator(
-            tags,
-            self.paginate_by)
+        paginator = Paginator(tags,self.paginate_by)
+        
         try:
-            page = paginator(page_number)
+            page = paginator.page(page_number)
         except PageNotAnInteger:
             page = paginator.page(1)
         except EmptyPage:
-            page = paginator.page(paginator.num_pages)
+            page = paginator.page(
+                paginator.num_pages)
 
         if page.has_previous():
             prev_url = reverse(
                 'organizer_tag_page',
-                args=(page.previous_page_number(),))
+                args=(
+                    page.previous_page_number(),)
+            )
         else:
             prev_url = None
 
         if page.has_next():
             next_url = reverse(
                 'organizer_tag_page',
-                args=(page.next_page_number(),))
+                args=(
+                    page.next_page_number(),)
+            )
         else:
             next_url = None
 
@@ -70,7 +74,7 @@ class TagPageList(View):
 
         return render(
             request,
-            self.template_name.
+            self.template_name,
             context)
 
 def tag_detail(request, slug):
@@ -119,9 +123,9 @@ class StartupList(View):
         context = {
             'is_paginated':page.has_other_pages(),
             'next_page_url':next_url,
-            'previous_page_url':prev_url,
             'paginator':paginator,
-            'tag_list':page,
+            'previous_page_url':prev_url,
+            'startups_list':page,
         }
         return render(
             request,

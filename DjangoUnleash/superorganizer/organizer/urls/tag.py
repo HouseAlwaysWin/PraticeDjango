@@ -10,6 +10,7 @@ from organizer.views import (
 
 
 urlpatterns = [
+    
     url(r'^$',
         TagList.as_view(),
         name='organizer_tag_list'),
