@@ -8,7 +8,7 @@ def add_site_data(apps,schema_editor):
     Site = apps.get_model('sites','Site')
     new_domain = 'site.django-unleashed.com'
     new_name = 'Startup Organizer'
-    site_d = getattr(settings,'SITE_ID',1)
+    site_id = getattr(settings,'SITE_ID',1)
     if Site.objects.exists():
         current_site = Site.objects.get(pk=site_id)
         current_site.domain = new_domain
