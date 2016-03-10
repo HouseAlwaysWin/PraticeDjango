@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'organizer',
     'blog',
     'contact',
+    'core',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,6 +57,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.contrub.flatpages.middleware.FlatPageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'superorganizer.urls'
