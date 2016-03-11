@@ -80,10 +80,28 @@ class TagPageList(View):
 
 
 class TagDetail(DetailView):
-    context_object_name ='startup'
-    model = Startups
+    context_object_name ='tag'
+    model = Tag
     template_name = (
-        'organizer/startup_detail.html')
+        'organizer/tag_detail.html')
+
+
+class TagCreate(ObjectCreateMixin,View):
+    form_class = TagForm
+    template_name = 'organizer/tag_form.html'
+
+class TagUpdate(ObjectUpdateMixin,View):
+    form_class = TagForm
+    model = Tag
+    template_name = 'organizer/tag_form_update.html'
+
+class TagDelete(ObjectDeleteMixin, View):
+    model = Tag
+    success_url = reverse_lazy(
+        'organizer_tag_list')
+    template_name = ('organizer/tag_confirm_delete.html')
+
+
 
 class StartupList(View):
     page_kwarg = 'page'
@@ -136,23 +154,7 @@ class StartupDetail(DetailView):
     context_object_name = 'startup'
     model = Startups
     template_name = (
-        'organizer/startup_detail.htl')
-
-
-class TagCreate(ObjectCreateMixin,View):
-    form_class = TagForm
-    template_name = 'organizer/tag_form.html'
-
-class TagUpdate(ObjectUpdateMixin,View):
-    form_class = TagForm
-    model = Tag
-    template_name = 'organizer/tag_form_update.html'
-
-class TagDelete(ObjectDeleteMixin, View):
-    model = Tag
-    success_url = reverse_lazy(
-        'organizer_tag_list')
-    template_name = ('organizer/tag_confirm_delete.html')
+        'organizer/startup_detail.html')
 
 
 class StartupCreate(ObjectCreateMixin,View):
