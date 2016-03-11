@@ -18,13 +18,19 @@
 	 </script><![endif]-->
     <link rel="stylesheet" type="text/caa"
 	  href="{% static 'site/style.css' %}">
+    <link rel="stylesheet" type="text/css"
+	  href="{% static 'site/normalize.css' %}">
+    <link rel="stylesheet" type="text/css"
+	  href="{% static 'site/skeleton.css' %}">
   </head>
 
   <body>
 
-    <div><!--container-->
-      <header>
-	<h1>Startup Oragnizer</h1>
+    <div class="container"><!--container-->
+      <header class="row">
+	<div class="offset-by-one tem columns">
+	  <h1 class="logo">Startup Oragnizer</h1>
+	</div>
       </header>
       <h4>Navigation Bar</h4>
       <nav>
@@ -49,9 +55,9 @@
 	</ul>
       </nav>
       {% if messages %}
-      <div>
-	<div>
-	  <ul>
+      <div class="row">
+	<div class="twelve columns">
+	  <ul class="messages">
 	    {% for message in message %}
 	    {% if message.tags %}
 	    <li class ="{{ message.tags }}">
