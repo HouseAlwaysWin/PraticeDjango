@@ -77,13 +77,16 @@ class TagPageList(View):
             self.template_name,
             context)
 
-def tag_detail(request, slug):
-    tag = get_object_or_404(
-       Tag, slug__iexact=slug)
-    return render(
-        request,
-        'organizer/tag_detail.html',
-        {'tag':tag})
+
+class TagDetail(View):
+    def get(self, request, slug):
+        tag = get_object_or_404(
+            Tag, slug__iexact=slug)
+        return render(
+            request,
+            'organizer/tag_detail.html',
+            {'tag':tag})
+
 
 
 class StartupList(View):
@@ -132,13 +135,15 @@ class StartupList(View):
             self.template_name,
             context)
 
-def startup_detail(request, slug):
-    startup = get_object_or_404(
-        Startups, slug__iexact=slug)
-    return render(
-        request,
-        'organizer/startup_detail.html',
-        {'startup':startup})
+class StartupDetail(View):
+    def get(self, request, slug):
+        startup = get_object_or_404(
+            Startups, slug__iexact=slug)
+        return render(
+            request,
+            'organizer/startup_detail.html',
+            {'startup':startup})
+
 
 class TagCreate(ObjectCreateMixin,View):
     form_class = TagForm

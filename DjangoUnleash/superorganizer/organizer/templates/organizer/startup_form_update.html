@@ -5,14 +5,16 @@
 {% endblock %}
 
 {% block content %}
-<div>
-  <div>
+<div class="row">
+  <div class="offset-by-two eight-column">
     <form
        action="{{ startup.get_update_url }}"
        method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submmit">
+      <button
+	 class="button-primary"
+	 type="submmit">
         Update Startup</button>
       <form>
   </div>
