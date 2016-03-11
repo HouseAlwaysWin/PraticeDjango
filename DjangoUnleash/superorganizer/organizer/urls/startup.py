@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from organizer.views import (StartupList,
-                             startup_detail,
+                             StartupDetail,
                              StartupCreate,
                              StartupUpdate,
                              StartupDelete)
@@ -16,7 +16,7 @@ urlpatterns = [
         name='organizer_startup_create'),
     
     url(r'^(?P<slug>[\w\-]+)/$',
-        startup_detail,
+        StartupDetail.as_view(),
         name='organizer_startup_detail'),
 
     url(r'^(?P<slug>[\w\-]+)/update/$',

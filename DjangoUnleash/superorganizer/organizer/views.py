@@ -16,7 +16,8 @@ from .models import (Tag,
                      NewsLink)
 from .utils import (ObjectCreateMixin,
                     ObjectUpdateMixin,
-                    ObjectDeleteMixin)
+                    ObjectDeleteMixin,
+                    DetailView)
 
 
 class TagList(View):
@@ -78,16 +79,11 @@ class TagPageList(View):
             context)
 
 
-class TagDetail(View):
-    def get(self, request, slug):
-        tag = get_object_or_404(
-            Tag, slug__iexact=slug)
-        return render(
-            request,
-            'organizer/tag_detail.html',
-            {'tag':tag})
-
-
+class TagDetail(DetailView):
+    context_object_name ='startup'
+    model = Startups
+    template_name = (
+        'organizer/startup_detail.html')
 
 class StartupList(View):
     page_kwarg = 'page'
@@ -135,14 +131,12 @@ class StartupList(View):
             self.template_name,
             context)
 
-class StartupDetail(View):
-    def get(self, request, slug):
-        startup = get_object_or_404(
-            Startups, slug__iexact=slug)
-        return render(
-            request,
-            'organizer/startup_detail.html',
-            {'startup':startup})
+
+class StartupDetail(DetailView):
+    context_object_name = 'startup'
+    model = Startups
+    template_name = (
+        'organizer/startup_detail.htl')
 
 
 class TagCreate(ObjectCreateMixin,View):
