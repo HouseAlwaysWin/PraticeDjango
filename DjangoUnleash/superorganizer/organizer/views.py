@@ -39,7 +39,7 @@ class TagPageList(View):
     def get(self ,request, page_number):
         tags = Tag.objects.all()
         paginator = Paginator(tags,self.paginate_by)
-        
+
         try:
             page = paginator.page(page_number)
         except PageNotAnInteger:
@@ -80,10 +80,8 @@ class TagPageList(View):
 
 
 class TagDetail(DetailView):
-    context_object_name ='tag'
     model = Tag
-    template_name = (
-        'organizer/tag_detail.html')
+
 
 
 class TagCreate(ObjectCreateMixin,View):
@@ -151,10 +149,8 @@ class StartupList(View):
 
 
 class StartupDetail(DetailView):
-    context_object_name = 'startup'
     model = Startups
-    template_name = (
-        'organizer/startup_detail.html')
+
 
 
 class StartupCreate(ObjectCreateMixin,View):

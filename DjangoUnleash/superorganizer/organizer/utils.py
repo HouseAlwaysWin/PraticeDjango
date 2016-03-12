@@ -4,6 +4,7 @@ from django.shortcuts import (redirect,
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.core.exceptions import ImproperlyConfigured
+from django.db.models import Model
 
 class DetailView(View):
     context_object_name = ''
@@ -11,14 +12,25 @@ class DetailView(View):
     template_name = ''
     template_name_suffix ='_detail'
 
+
+    def get(self, request,**kwargs):
+        self.kwargs = kwargs
+        self.object = self.get_object()
+        template_name = self.get_template_names()
+        context = self.get_context_data()
+        return render(
+            request,
+            template_name,
+            context)
+
     def get_object(self):
-        sluf = self.kwargs.get('slug')
+        slug = self.kwargs.get('slug')
         if slug is None:
             raise AttributeError(
-                "{c} expects {p} parameter"
+                "{c} expects {a} parameter"
                 "from URL pattern.".format(
                     c=self.__class__.__name__,
-                    p='slug'))
+                    a='slug'))
         if self.model:
             get_object_or_404(
                 self.model,
@@ -29,7 +41,7 @@ class DetailView(View):
                 "specified to work.".format(
                     c=self.__class__.__name__,
                     a='model'))
-        
+
     def get_context_data(self):
         context = {}
         if self.object:
@@ -39,15 +51,20 @@ class DetailView(View):
                 context[context_object_name] = (
                     self.object)
         return context
-    
+
     def get_template_names(self):
         if self.template_name:
             return self.template_name
+        if self.model._meta.model_name is 'startups':
+            return "{app}/{model}{suffix}.html".format(
+                app=self.model._meta.app_label,
+                model='startup',
+                suffix=self.template_name_suffix)
         return "{app}/{model}{suffix}.html".format(
-            app=self.object._meta.model_name,
-            model=self.object._meta.model_name,
+            app=self.model._meta.app_label,
+            model=self.model._meta.model_name,
             suffix=self.template_name_suffix)
-    
+
     def get_context_object_name(self):
         if self.context_object_name:
             return self.context_object_name
@@ -55,15 +72,8 @@ class DetailView(View):
             return self.object._meta.model_name
         else:
             return None
-        
-    def get(self, request, slug):
-        obj = get_object_or_404(
-            self.model,
-            slug__iexact=slug)
-        return render(
-            request,
-            self.template_name,
-            {self.context_object_name:obj})
+
+
 
 class ObjectCreateMixin:
     form_class = None
