@@ -1,4 +1,4 @@
-{% extends parent_template|default:"blog/base_post.html" %}
+{% extends parent_template|default:"blog/base_blog.html" %}
 
 {% block title %}
 {{ block.super }} - {{ year|date:"Y" }} Posts
@@ -40,7 +40,7 @@
           </time>
         </p>
       </header>
-      <p>{{ post.text|turncatewords:20 }}</p>
+      <p>{{ post.text|truncatewords:20 }}</p>
       <p class="read-more">
         <a href="{{ post.get_absolute_url }}">
           Read more&hellip;

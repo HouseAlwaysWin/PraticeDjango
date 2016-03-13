@@ -17,7 +17,7 @@ urlpatterns = [
         PostCreate.as_view(),
         name='blog_post_create'),
 
-    url(r'^(?P<year>\d{4}/$)',
+    url(r'^(?P<year>\d{4})/$',
         PostArchiveYear.as_view(),
         name='blog_post_archive_year'),
 
