@@ -1,7 +1,9 @@
 from django.shortcuts import (render,
                               get_object_or_404,
                               redirect)
-from django.views.generic import View
+from django.views.generic import (View,
+                                  CreateView,
+                                  ListView)
 from django.views.decorators.http import require_http_methods
 
 from .forms import PostForm
@@ -21,38 +23,12 @@ def post_detail(request, year, month, slug, parent_template=None):
         {'post':post,
          'parent_template':parent_template})
 
-class PostCreate(View):
+class PostCreate(CreateView):
     form_class = PostForm
-    template_name = 'blog/post_form.html'
+    model = Post
 
-    def get(self, request):
-        return render(
-            request,
-            self.template_name,
-            {'form':self.form_class()})
-
-    def post(self, request):
-        bound_form = self.form_class(request.POST)
-        if bound_form.is_valid():
-            new_post = bound_form.save()
-            return redirect(new_post)
-        else:
-            return render(
-                request,
-                self.template_name,
-                {'form':bound_form})
-
-
-class PostList(View):
-    template_name = ''
-
-    def get(self, request, parent_template=None):
-        return render(
-            request,
-            self.template_name,
-            {'post_list':Post.objects.all(),
-             'parent_template':parent_template})
-
+class PostList(ListView):
+    model = Post
 
 class PostUpdate(View):
     form_class = PostForm

@@ -158,7 +158,7 @@ class StartupDetail(DetailView):
 class StartupCreate(CreateView):
     form_class = StartupForm
     model = Startups
-
+    template_name = 'organizer/startup_form.html'
 
 class StartupUpdate(UpdateView):
     form_class = StartupForm

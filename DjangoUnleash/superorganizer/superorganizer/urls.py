@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.views.generic import (RedirectView,
+                                  TemplateView)
 from django.contrib import admin
 from django.contrib.flatpages import urls as flatpages_urls
 from organizer.urls import (
@@ -22,11 +24,16 @@ from organizer.urls import (
     tag as tag_urls)
 from blog import urls as blog_urls
 from contact import urls as contact_urls
-from .views import redirect_root
+
 
 
 urlpatterns = [
-    url(r'^$',redirect_root),
+    url(r'^$',RedirectView.as_view(
+        pattern_name='blog_post_list',
+        permanent=False)),
+    url(r'^about/$',TemplateView.as_view(
+        template_name='site/about.html'),
+        name='about_site'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^blog/', include(blog_urls)),
     url(r'^contact/',include(contact_urls)),
