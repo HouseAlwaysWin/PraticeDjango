@@ -3,7 +3,9 @@ from .views import (PostList,
                     PostCreate,
                     PostUpdate,
                     PostDelete,
-                    post_detail)
+                    post_detail,
+                    PostArchiveYear,
+                    PostArchiveMonth)
 
 urlpatterns = [
     url(r'^$',
@@ -14,6 +16,15 @@ urlpatterns = [
     url(r'^create/$',
         PostCreate.as_view(),
         name='blog_post_create'),
+
+    url(r'^(?P<year>\d{4}/$)',
+        PostArchiveYear.as_view(),
+        name='blog_post_archive_year'),
+
+    url(r'^(?P<year>\d{4})/'
+        r'(?P<month>\d{1,2})/$',
+        PostArchiveMonth.as_view(),
+        name='blog_post_archive_month'),
 
     url(r'^(?P<year>\d{4})/'
         r'(?P<month>\d{1,2})/'
