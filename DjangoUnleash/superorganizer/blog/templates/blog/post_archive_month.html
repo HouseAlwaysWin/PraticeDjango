@@ -14,6 +14,7 @@
         Write New Blog Post</a>
     </div>
     <h2>All Posts for {{ month|date:"F Y" }}</h2>
+    {% for post in post_list %}
     <article class="list-item">
       <header>
         <h3>
@@ -62,7 +63,7 @@
     <ul class="pagination">
       {% if previous_month %}
       <li>
-        <a href="{% url 'blog_post_archive_month' previous_month|date:"Y"previous_month|date:"m" %}">
+        <a href="{% url 'blog_post_archive_month' previous_month|date:"Y" previous_month|date:"m" %}">
           ◀ Posts from {{ previous_month|date:"F Y" }}</a>
       </li>
       {% endif %}
