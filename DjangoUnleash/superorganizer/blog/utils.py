@@ -75,8 +75,13 @@ class DateObjectMixin(YearMixin, MonthMixin, DateMixin):
                 until = self._make_date_lookup_arg(
                     self._get_next_month(date))
                 return {
-                    '%s__gte' % date_field: date,
+                    '%s__gte' % date_field: since,
+                    '%s__lt' % date_field:until,
+                }
+            else:
+                return {
+                    '%s__gte' % date_field:date,
                     '%s__lt' % date_field:
-                        self._get_next_month(date),
+                    self._get_next_month(date),
                     }
       
