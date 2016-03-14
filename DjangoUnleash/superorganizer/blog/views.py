@@ -5,25 +5,19 @@ from django.views.generic import (View,
                                   CreateView,
                                   ArchiveIndexView,
                                   YearArchiveView,
-                                  MonthArchiveView)
+                                  MonthArchiveView,
+                                  DeleteView,
+                                  DetailView)
 from django.views.decorators.http import require_http_methods
+from django.core.urlresolvers import reverse_lazy
 
 from .forms import PostForm
 from .models import Post
+from .utils import PostGetMixin
+from core.utils import UpdateView
 
-
-@require_http_methods(['HEAD','GET'])
-def post_detail(request, year, month, slug, parent_template=None):
-    post = get_object_or_404(
-        Post,
-        pub_date__year=year,
-        pub_date__month=month,
-        slug__iexact=slug)
-    return render(
-        request,
-        'blog/post_detail.html',
-        {'post':post,
-         'parent_template':parent_template})
+class PostDetail(PostGetMixin, DetailView):
+    model = Post
 
 class PostCreate(CreateView):
     form_class = PostForm
@@ -39,63 +33,16 @@ class PostList(ArchiveIndexView):
     paginate_by = 5
     template_name = 'blog/post_list.html'
 
-class PostUpdate(View):
+class PostUpdate(PostGetMixin, UpdateView):
     form_class = PostForm
     model = Post
-    template_name = 'blog/post_form_update.html'
 
-    def get_object(self, year, month, slug):
-        return get_object_or_404(
-            self.model,
-            pub_date__year=year,
-            pub_date__month=month,
-            slug=slug)
-
-    def get(self, request, year, month, slug):
-        post = self.get_object(year, month, slug)
-        context = {'form':self.form_class(instance=post),
-                   'post':post,}
-        return render(
-            request,
-            self.template_name,
-            context)
-
-    def post(self, request, year, month, slug):
-        post = self.get_object(year, month, slug)
-        bound_form =self.form_class(request.POST,
-                                    instance=post)
-        if bound_form.is_valid():
-            new_post = bound_form.save()
-            return redirect(new_post)
-        else:
-            context = {'form':bound_form,
-                       'post':post,}
-            return render(
-                request,
-                self.template_name,
-                context)
-class PostDelete(View):
-
-    def get(self, request, year, month, slug):
-        post = get_object_or_404(
-            Post,
-            pub_date__year=year,
-            pub_date__month=month,
-            slug__iexact=slug)
-        return render(
-            request,
-            'blog/post_confirm_delete.html',
-            {'post':post})
-
-    def post(self, request, year, month, slug):
-
-        post = get_object_or_404(
-            Post,
-            pub_date__year=year,
-            pub_date__month=month,
-            slug__iexact=slug)
-        post.delete()
-        return redirect('blog_post_list')
+    
+class PostDelete(PostGetMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy(
+        'blog_post_list')
+    
 
 class PostArchiveYear(YearArchiveView):
     model = Post

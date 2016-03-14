@@ -3,7 +3,7 @@ from .views import (PostList,
                     PostCreate,
                     PostUpdate,
                     PostDelete,
-                    post_detail,
+                    PostDetail,
                     PostArchiveYear,
                     PostArchiveMonth)
 
@@ -43,7 +43,6 @@ urlpatterns = [
     url(r'^(?P<year>\d{4})/'
         r'(?P<month>\d{1,2})/'
         r'(?P<slug>[\w\-]+)/$',
-        post_detail,
-        {'parent_template':'base.html'},
+        PostDetail.as_view(),
         name='blog_post_detail'),
     ]
