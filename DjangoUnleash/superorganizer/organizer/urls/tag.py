@@ -2,7 +2,6 @@ from django.conf.urls import url
 
 from organizer.views import (
     TagList,
-    TagPageList,
     TagDetail,
     TagCreate,
     TagUpdate,
@@ -18,10 +17,6 @@ urlpatterns = [
     url(r'^create/$',
         TagCreate.as_view(),
         name='organizer_tag_create'),
-
-    url(r'^(?P<page_number>\d+)/$',
-        TagPageList.as_view(),
-        name='organizer_tag_page'),
 
     url(r'^(?P<slug>[\w\-]+)/$',
         TagDetail.as_view(),
