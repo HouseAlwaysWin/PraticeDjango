@@ -50,38 +50,38 @@ class DateObjectMixin(YearMixin, MonthMixin, DateMixin):
         
         if queryset is None:
             queryset = self.get_queryset()
-            if (not self.get_allow_future()
-                and date > date.today()):
-                
-                raise Http404(
-                    "Future {} not available because"
-                    "{}.allow_future is False."
-                    .format(
-                        (queryset.model
-                         ._meta.verbose_name_plural),
-                        self.__class__.__name__))
-            filter_dict = (
-                self._make_single_date_lookup(date))
-            queryset = queryset.filter(**filter_dict)
-            return super().get_object(
-                queryset=queryset)
-
-        def _make_single_date_lookup(self, date):
-            date_field = self.get_date_field()
+        if (not self.get_allow_future()
+            and date > date.today()):
             
-            if self.uses_datetime_field:
-                since = self._make_date_lookup_arg(
-                    date)
-                until = self._make_date_lookup_arg(
-                    self._get_next_month(date))
-                return {
-                    '%s__gte' % date_field: since,
-                    '%s__lt' % date_field:until,
-                }
-            else:
-                return {
-                    '%s__gte' % date_field:date,
-                    '%s__lt' % date_field:
-                    self._get_next_month(date),
-                    }
-      
+            raise Http404(
+                "Future {} not available because"
+                "{}.allow_future is False."
+                .format(
+                    (queryset.model
+                     ._meta.verbose_name_plural),
+                    self.__class__.__name__))
+        filter_dict = (
+            self._make_single_date_lookup(date))
+        queryset = queryset.filter(**filter_dict)
+        return super().get_object(
+            queryset=queryset)
+
+    def _make_single_date_lookup(self, date):
+        date_field = self.get_date_field()
+        
+        if self.uses_datetime_field:
+            since = self._make_date_lookup_arg(
+                date)
+            until = self._make_date_lookup_arg(
+                self._get_next_month(date))
+            return {
+                '%s__gte' % date_field: since,
+                '%s__lt' % date_field: until,
+            }
+        else:
+            return {
+                '%s__gte' % date_field:date,
+                '%s__lt' % date_field:
+                self._get_next_month(date),
+            }
+        
