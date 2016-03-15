@@ -15,7 +15,9 @@ from .models import (Tag,
                      NewsLink)
 from core.utils import UpdateView
 
-from .utils import PageLinksMixin
+from .utils import (PageLinksMixin,
+                    NewsLinkGetObjectMixin,
+                    StartupContextMixin)
 
 class TagList(PageLinksMixin, ListView):
     paginate_by = 5
@@ -71,18 +73,26 @@ class StartupDelete(DeleteView):
     template_name = ('organizer/startup_confirm_delete.html')
 
 
-class NewsLinkCreate(CreateView):
+class NewsLinkCreate(NewsLinkGetObjectMixin,
+                     StartupContextMixin,
+                     CreateView):
+    
     form_class = NewsLinkForm
     model = NewsLink
 
 
-class NewsLinkUpdate(UpdateView):
+class NewsLinkUpdate(NewsLinkGetObjectMixin,
+                     StartupContextMixin,
+                     UpdateView):
+    
     form_class = NewsLinkForm
     model = NewsLink
+    slug_url_kwarg = 'newslink_slug'
 
     
-class NewsLinkDelete(DeleteView):
+class NewsLinkDelete(StartupContextMixin,DeleteView):
     model = NewsLink
+    slug_url_kwarg = 'newslink_slug'
 
     def get_success_url(self):
         return (self.object.startup.get_absolute_url())

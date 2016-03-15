@@ -4,7 +4,12 @@ from organizer.views import (StartupList,
                              StartupDetail,
                              StartupCreate,
                              StartupUpdate,
-                             StartupDelete)
+                             StartupDelete,
+                             NewsLinkCreate,
+                             NewsLinkDelete,
+                             NewsLinkUpdate)
+
+
 
 urlpatterns = [
     url(r'^$',
@@ -14,7 +19,7 @@ urlpatterns = [
     url(r'^create/$',
         StartupCreate.as_view(),
         name='organizer_startup_create'),
-    
+
     url(r'^(?P<slug>[\w\-]+)/$',
         StartupDetail.as_view(),
         name='organizer_startup_detail'),
@@ -26,4 +31,22 @@ urlpatterns = [
     url(r'^(?P<slug>[\w\-]+)/delete/$',
         StartupDelete.as_view(),
         name='organizer_startup_delete'),
+
+    url(r'^(?P<startup_slug>[\w\-]+)/'
+        r'add_article_link/$',
+        NewsLinkCreate.as_view(),
+        name='organizer_newslink_create'),
+
+    url(r'^(?P<startup_slug>[\w\-]+)/'
+        r'(?P<newslink_slug>[\w\-]+)/'
+        r'delete/$',
+        NewsLinkDelete.as_view(),
+        name='organizer_newslink_delete'),
+
+    url(r'^(?P<startup_slug>[\w\-]+)/'
+        r'(?P<newslink_slug>[\w\-]+)/'
+        r'update/$',
+        NewsLinkUpdate.as_view(),
+        name='organizer_newslink_update'),
+
 ]

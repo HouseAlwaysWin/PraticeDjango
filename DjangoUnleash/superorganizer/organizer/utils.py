@@ -1,3 +1,32 @@
+from django.shortcuts import get_object_or_404
+from .models import Startups ,NewsLink
+
+
+
+class NewsLinkFormMixin:
+
+    def form_valid(self, form):
+        startup = get_object_or_404(
+            Startups,
+            slug__iexact=self,kwargs.get(
+                self.startup_slug_url_kwarg))
+        self.object = form.save(
+            startup_obj=startup)
+        return HttpResponseRedirect(
+            self.get_success_url())
+
+class NewsLinkGetObjectMixin:
+
+    def get_object(self, queryset=None):
+        startup_slug = self.kwargs.get(
+            self.startup_slug_url_kwarg)
+        newslink_slug = slef.kwargs.get(
+            self.slug_url_kwarg)
+        return get_object_or_404(
+            NewsLink,
+            slug__iexact=newslink_slug,
+            startup__slug__iexact=startup_slug)
+
 class PageLinksMixin:
     page_kwarg = 'page'
 
@@ -45,3 +74,17 @@ class PageLinksMixin:
                 'last_page_url':self.last_page(page),
             })
         return context
+
+class StartupContextMixin:
+    startup_slug_url_kwarg = 'startup_slug'
+    startup_context_object_name = 'startup'
+
+    def get_context_date(self, **kwargs):
+        startup_slug = self.kwargs.get(
+            self.startup_slug_url_kwarg)
+        startup = get_object_or_404(
+            Startups, slug__iexact=startup_slug)
+        context = {
+            self.startup_context_object_name: startup,}
+        context.update(kwargs)
+        return super().get_context_data(**context)
