@@ -36,14 +36,12 @@ class NewsLinkForm(SlugCleanMixin,forms.ModelForm):
         fields = '__all__'
 
     def save(self, **kwargs):
-        startup_obj = kwargs.get('startup_obj',None)
-        if startup_obj is not None:
-            instance = super().save(commit=False)
-            instance.startup = startup_obj
-            instance.save()
-            self.save_m2m()
-        else:
-            instance = super().save()
+        
+        instance = super().save(commit=False)
+        instance.startup = (
+            self.data.get('startup'))
+        instance.save()
+        self.save_m2m()
 
         return instance
 
