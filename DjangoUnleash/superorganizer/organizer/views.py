@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.core.paginator import (Paginator,
                                    EmptyPage,
                                    PageNotAnInteger)
+from django.shortcuts import get_object_or_404
 
 from .forms import (TagForm,
                     StartupForm,
@@ -17,7 +18,7 @@ from core.utils import UpdateView
 
 from .utils import (PageLinksMixin,
                     NewsLinkGetObjectMixin,
-                    NewsLinkForMixin,
+                    NewsLinkFormMixin,
                     StartupContextMixin)
 
 class TagList(PageLinksMixin, ListView):
@@ -81,6 +82,19 @@ class NewsLinkCreate(NewsLinkFormMixin,
     
     form_class = NewsLinkForm
     model = NewsLink
+
+    def get_initial(self):
+        startup_slug = self.kwargs.get(
+            self.startup_slug_url_kwarg)
+        self.startup = get_object_or_404(
+            Startup, slug__iexact=startup_slug)
+        initial = {
+            self.startup_context_object_name:
+            self.startup,
+        }
+        initial.update(self.initial)
+
+        return initial
 
 
 class NewsLinkUpdate(NewsLinkGetObjectMixin,

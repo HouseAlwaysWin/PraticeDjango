@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms.widgets import HiddenInput
 
 from .models import Tag, Startups, NewsLink
 
@@ -34,27 +35,4 @@ class NewsLinkForm(SlugCleanMixin,forms.ModelForm):
     class Meta:
         model = NewsLink
         fields = '__all__'
-
-    def save(self, **kwargs):
-        
-        instance = super().save(commit=False)
-        instance.startup = (
-            self.data.get('startup'))
-        instance.save()
-        self.save_m2m()
-
-        return instance
-
-    def clean(self):
-        cleaned_data = super().clean()
-        slug = cleaned_data.get('slug')
-        startup_obj = self.data.get('startup')
-        exists = (NewsLink.objects.filter(
-            slug__iexact=slug,
-            startup=startup_object,).exists())
-        if exists:
-            reise ValidationError(
-                "News articles with this Slug"
-                "and Startup already exists.")
-        else:
-            return cleaned_data
+        widgets = {'startup':HiddenInput()}

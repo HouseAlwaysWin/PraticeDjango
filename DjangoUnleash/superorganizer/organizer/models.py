@@ -53,15 +53,12 @@ class Startups(models.Model):
 
     def get_update_url(self):
         return reverse('organizer_startup_update',
-                       kwargs={
-                           'startup_slug':self.startup.slug,
-                           'newslink_slug':self.slug})
-
+                       kwargs={'slug':self.slug})
+    
     def get_delete_url(self):
         return reverse('organizer_startup_delete',
-                       kwargs={
-                           'startup_slug':self.startup.slug,
-                           'newlink_slug':self.slug})
+                       kwargs={'slug':self.slug})
+    
 
     class Meta:
         ordering = ['name']
@@ -85,7 +82,8 @@ class NewsLink(models.Model):
     def get_update_url(self):
         return reverse(
             'organizer_newslink_update',
-            kwargs={'pk':self.pk})
+            kwargs={'startup_slug':self.startup.slug,
+                    'newslink_slug':self.slug})
 
     def get_delete_url(self):
         return reverse(

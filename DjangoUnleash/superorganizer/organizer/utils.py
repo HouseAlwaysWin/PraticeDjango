@@ -81,12 +81,20 @@ class StartupContextMixin:
     startup_slug_url_kwarg = 'startup_slug'
     startup_context_object_name = 'startup'
 
-    def get_context_date(self, **kwargs):
-        startup_slug = self.kwargs.get(
-            self.startup_slug_url_kwarg)
-        startup = get_object_or_404(
-            Startups, slug__iexact=startup_slug)
-        context = {
-            self.startup_context_object_name: startup,}
-        context.update(kwargs)
+    def get_context_data(self, **kwargs):
+        if hasattr(self,'startup'):
+            context = {
+                self.startup_context_object_name: startup,}
+        else:
+            startup_slug = self.kwargs.get(
+                self.startup_slug_url_kwarg)
+            startup = get_object_or_404(
+                Startup,
+                slug__iexact=startup_slug)
+            
+            context = {
+                self.startup_context_object_naem:startup,
+            }
+            context.update(kwargs)
+             
         return super().get_context_data(**context)
