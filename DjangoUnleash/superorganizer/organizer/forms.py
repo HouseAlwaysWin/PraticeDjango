@@ -30,7 +30,33 @@ class StartupForm(SlugCleanMixin,forms.ModelForm):
 
 
 class NewsLinkForm(SlugCleanMixin,forms.ModelForm):
-
+    
     class Meta:
         model = NewsLink
         fields = '__all__'
+
+    def save(self, **kwargs):
+        startup_obj = kwargs.get('startup_obj',None)
+        if startup_obj is not None:
+            instance = super().save(commit=False)
+            instance.startup = startup_obj
+            instance.save()
+            self.save_m2m()
+        else:
+            instance = super().save()
+
+        return instance
+
+    def clean(self):
+        cleaned_data = super().clean()
+        slug = cleaned_data.get('slug')
+        startup_obj = self.data.get('startup')
+        exists = (NewsLink.objects.filter(
+            slug__iexact=slug,
+            startup=startup_object,).exists())
+        if exists:
+            reise ValidationError(
+                "News articles with this Slug"
+                "and Startup already exists.")
+        else:
+            return cleaned_data

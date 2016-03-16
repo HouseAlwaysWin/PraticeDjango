@@ -17,6 +17,7 @@ from core.utils import UpdateView
 
 from .utils import (PageLinksMixin,
                     NewsLinkGetObjectMixin,
+                    NewsLinkForMixin,
                     StartupContextMixin)
 
 class TagList(PageLinksMixin, ListView):
@@ -73,7 +74,8 @@ class StartupDelete(DeleteView):
     template_name = ('organizer/startup_confirm_delete.html')
 
 
-class NewsLinkCreate(NewsLinkGetObjectMixin,
+class NewsLinkCreate(NewsLinkFormMixin,
+                     NewsLinkGetObjectMixin,
                      StartupContextMixin,
                      CreateView):
     
