@@ -91,6 +91,47 @@ DATABASES = {
     }
 }
 
+
+#Logging
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+
+verbose = (
+    "[%(asctime)s] %(levelname)s"
+    "[%(name)s:%(lineno)s] %(message)s")
+
+from .log_filters import ManagementFilter
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters':{
+        'remove_migration_sql':{
+            '()':ManagementFilter,
+            },
+        },
+
+    'handlers': {
+        'console':{
+            'filters':['remove_migration_sql'],
+            'class': 'logging.StreamHandler',
+            },
+        },
+    'formatters':{
+        'verbose':{
+            'format':verbose,
+            'datafmt':"%Y-%b-%d %H:%M:%S"
+            },
+        },
+    'loggers':{
+        'django':{
+            'handlers':['console'],
+            'level':'DEBUG',
+            'formatter':'verbose'
+            },
+        },
+    }
+
+
 # Email
 # https://docs.djangoproject.com/en/1.8/topics/email/
 
@@ -101,6 +142,9 @@ EMAIL_SUBJECT_PREFIX = '[Startup Organizer]'
 MANAGER = (
     ('Us','ourselves@django-unleashed.com'),
     )
+
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
