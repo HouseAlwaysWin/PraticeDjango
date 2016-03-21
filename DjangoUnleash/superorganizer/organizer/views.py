@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import (permission_required,
 from django.utils.decorators import method_decorator
 from django.contrib.auth import PermissionDenied
 
+from user.decorators import custom_login_required
+
 from .forms import (TagForm,
                     StartupForm,
                     NewsLinkForm)
@@ -59,7 +61,7 @@ class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
 
-    @method_decorator(login_required)
+    @method_decorator(custom_login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(
             request, *args, **kwargs)
