@@ -45,12 +45,12 @@
     </div>
   </div>
 
-  {% if startups.newslink_set.all or startups.blog_posts.all or perms.organizer.add_newslink %}
+  {% if startups.newslink_set.all or perms.blog_view_future_post and startups.blog_posts.all or startup.published_posts|length > 0 or perms.organizer.add_newslink %}
   <div class="row">
 
     {% if startups.newslink_set.all %}
 
-    {% if startups.blog_posts.all %}
+    {% if perms.blog.view_future_post and startup.blog_posts.all or startup.published_posts|length > 0 %}
     <section class="meta offset-by-two one-third column">
       {% else %}
       <section class="meta offset-by-two two-thirds column">
@@ -88,7 +88,7 @@
 	</ul>
       </section>
       {% elif perms.organizer.add_newslink %}
-      {% if startup.blog_posts.all %}
+      {% if perms.blog.view_furure_post and startup.blog_posts.all or startup.published|length > 0 %}
       <section class="meta offset-by-two one third column">
 	{% else %}
 	<section class="meta offset0-by-two two-thirds column">
@@ -99,15 +99,16 @@
 	       class="button">
 	      Add Article</a></p>
 	</section>
-	
+
       {% endif %}
 
-      {% if startups.blog_posts.all %}
+      {% if perms.blog.view_future_post and startups.blog_posts.all or startup.published_posts|length > 0  %}
       {% if startups.newslink_set.all or perms.organizer.add_newslink %}
       <section class="meta one-third column">
 	{% else %}
 	<section class="meta offset-by-two two-third column">
 	  {% endif %}
+          {% if perms.blog.view_future_post and startup.blog_posts.all %}
 	  <h3>Blog Post{{ startups.blog_posts.all|pluralize }}</h3>
 	  <ul>
 	    {% for post in startups.blog_posts.all %}
@@ -117,6 +118,17 @@
 	    </li>
 	    {% endfor %}
 	  </ul>
+          {% elif startup.published_posts|length > 0 %}
+          <h3>Blog Post{{ startup.published_posts|pluralize }}</h3>
+          <ul>
+            {% for post in startup.published_posts %}
+            <li>
+              <a href="{{ post.get_absolute_url }}">
+                {{ post.title|title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
 	</section>
 	{% endif %}
   </div>
