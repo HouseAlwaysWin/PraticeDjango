@@ -10,7 +10,7 @@ from django.views.generic import (View,
                                   DetailView)
 from django.views.decorators.http import require_http_methods
 from django.core.urlresolvers import reverse_lazy
-
+from user.decorators import require_authenticated_permission
 from .forms import PostForm
 from .models import Post
 from .utils import DateObjectMixin
@@ -21,6 +21,8 @@ class PostDetail(DateObjectMixin, DetailView):
     date_field = 'pub_date'
     model = Post
 
+@require_authenticated_permission(
+    'blog.add_post')
 class PostCreate(CreateView):
     form_class = PostForm
     model = Post

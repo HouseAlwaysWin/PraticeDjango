@@ -10,8 +10,9 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.contrib.auth import PermissionDenied
 
-from user.decorators import (custom_login_required,
-                             require_authenthicated_permission)
+from user.decorators import (class_login_required,
+                             require_authenticated_permission)
+
 
 from .forms import (TagForm,
                     StartupForm,
@@ -41,26 +42,18 @@ def in_contrib_group(user):
     else:
         raise PermissionDenied
 
+@require_authenticated_permission(
+    'organizer.add_tag')
 class TagCreate(CreateView):
     form_class = TagForm
     model = Tag
+    
 
-    @method_decorator(
-        require_authenthicated_permission(
-            'organizer.add_tag'))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(
-            request, *args, **kwargs)
-
-
+@require_authenticated_permission(
+    'organizer.change_tag')
 class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
-
-    @custom_login_required
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(
-            request, *args, **kwargs)
 
 
 class TagDelete(DeleteView):
@@ -86,6 +79,8 @@ class StartupCreate(CreateView):
     model = Startups
     template_name = 'organizer/startup_form.html'
 
+@require_authenticated_permission(
+    'organizer.change_startup')
 class StartupUpdate(UpdateView):
     form_class = StartupForm
     model = Startups
