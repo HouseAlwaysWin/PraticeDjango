@@ -7,7 +7,8 @@ from django.core.paginator import (Paginator,
                                    EmptyPage,
                                    PageNotAnInteger)
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import  user_passes_test
+from django.contrib.auth.decorators import (permission_required,
+                                            login_required)
 from django.utils.decorators import method_decorator
 from django.contrib.auth import PermissionDenied
 
@@ -32,15 +33,22 @@ class TagDetail(DetailView):
     model = Tag
 
 
+def in_contrib_group(user):
+    if user.groups.filter(
+            name='contributors').exists():
+        return True
+    else:
+        raise PermissionDenied
 
 class TagCreate(CreateView):
     form_class = TagForm
     model = Tag
 
+    @method_decorator(login_required)
     @method_decorator(
         permission_required(
             'organizer.add_tag',
-            raise_exception=True
+            raise_exception=True,
         ))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(
@@ -50,6 +58,11 @@ class TagCreate(CreateView):
 class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(
+            request, *args, **kwargs)
 
 
 class TagDelete(DeleteView):
@@ -80,11 +93,14 @@ class StartupUpdate(UpdateView):
     model = Startups
     template_name = 'organizer/startup_form_update.html'
 
+
 class StartupDelete(DeleteView):
     model = Startups
     success_url = reverse_lazy(
         'organizer_startup_list')
     template_name = ('organizer/startup_confirm_delete.html')
+
+    
 
 
 class NewsLinkCreate(NewsLinkFormMixin,
