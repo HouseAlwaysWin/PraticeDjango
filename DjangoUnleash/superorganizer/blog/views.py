@@ -13,7 +13,7 @@ from django.core.urlresolvers import reverse_lazy
 from user.decorators import require_authenticated_permission
 from .forms import PostForm
 from .models import Post
-from .utils import (AllowFutuePermissionMixin,
+from .utils import (AllowFuturePermissionMixin,
                     DateObjectMixin)
 from core.utils import UpdateView
 
@@ -29,7 +29,7 @@ class PostCreate(CreateView):
     form_class = PostForm
     model = Post
 
-class PostList(AllowFururePermissionMixin,
+class PostList(AllowFuturePermissionMixin,
                ArchiveIndexView):
     allow_empty = True
 
@@ -55,13 +55,13 @@ class PostDelete(DateObjectMixin, DeleteView):
         'blog_post_list')
     
 
-class PostArchiveYear(AllowFurutePermisionMixin,
+class PostArchiveYear(AllowFuturePermissionMixin,
                       YearArchiveView):
     model = Post
     date_field = 'pub_date'
     make_object_list = True
 
-class PostArchiveMonth(AllowFururePermissionMixin,
+class PostArchiveMonth(AllowFuturePermissionMixin,
                        MonthArchiveView):
     model = Post
     date_field = 'pub_date'

@@ -7,7 +7,7 @@ from django.views.generic.dates import (
 class AllowFuturePermissionMixin():
 
     def get_allow_future(self):
-        return self.requrest.user.has_perm(
+        return self.request.user.has_perm(
             'blog.view_future_post')
 
 
