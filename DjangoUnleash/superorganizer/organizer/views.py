@@ -7,12 +7,11 @@ from django.core.paginator import (Paginator,
                                    EmptyPage,
                                    PageNotAnInteger)
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import (permission_required,
-                                            login_required)
 from django.utils.decorators import method_decorator
 from django.contrib.auth import PermissionDenied
 
-from user.decorators import custom_login_required
+from user.decorators import (custom_login_required,
+                             require_authenthicated_permission)
 
 from .forms import (TagForm,
                     StartupForm,
@@ -46,12 +45,9 @@ class TagCreate(CreateView):
     form_class = TagForm
     model = Tag
 
-    @method_decorator(login_required)
     @method_decorator(
-        permission_required(
-            'organizer.add_tag',
-            raise_exception=True,
-        ))
+        require_authenthicated_permission(
+            'organizer.add_tag'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(
             request, *args, **kwargs)
@@ -61,7 +57,7 @@ class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
 
-    @method_decorator(custom_login_required)
+    @custom_login_required
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(
             request, *args, **kwargs)
