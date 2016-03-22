@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import RedirectView
 from django.core.urlresolvers import reverse_lazy
-
+from .views import DisableAccount
 
 password_urls = [
     url(r'^change/$',
@@ -50,6 +50,9 @@ password_urls = [
         {'template_name':'user/password_reset_complete.html',
          'extra_context':{'form':AuthenticationForm}},
         name='pw_reset_complete'),
+    url(r'^disable/$',
+        DisableAccount.as_view(),
+        name='disable'),
     
     ]
 
