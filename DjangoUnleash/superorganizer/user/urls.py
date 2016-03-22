@@ -4,6 +4,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import RedirectView
 from django.core.urlresolvers import reverse_lazy
 from .views import DisableAccount
+from django.views.generic import (RedirectView,
+                                  TemplateView)
+from .views import (ActivateAccount,
+                    CreateAccount,
+                    DisableAccount)
 
 password_urls = [
     url(r'^change/$',
@@ -53,6 +58,20 @@ password_urls = [
     url(r'^disable/$',
         DisableAccount.as_view(),
         name='disable'),
+    url(r'^create/$',
+        CreateAccount.as_view(),
+        name='create'),
+    url(r'^create/done/$',
+        TemplateView.as_view(
+            template_name=(
+                'user/user_create_done.html')),
+        name='create_done'),
+    url(r'^activate/'
+        r'(?P<uidb64>[0-9A-Za-z_\-]+)/'
+        r'(?P<token>[0-9A-za-z]{1,13}'
+        r'-[0-9A-Za-z]{1,20})/$',
+        ActivateAccount.as_view(),
+        name='activate'),
     
     ]
 
