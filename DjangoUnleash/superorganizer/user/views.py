@@ -16,7 +16,7 @@ from django.contrib.auth import (get_user,
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
-from .forms import UserCreationForm
+from .forms import (UserCreationForm,ResendActivationEmailForm)
 from .utils import MailContextViewMixin
 
 
@@ -96,7 +96,7 @@ class CreateAccount(MailContextViewMixin,View):
         bound_form =self.form_class(request.POST)
         if bound_form.is_valid():
             bound_form.save(
-                **self.get_save_kwargs*request))
+                **self.get_save_kwargs*request)
             if bound_form.mail_sent:
                 return redirect(
                     self.success_url)
@@ -106,8 +106,48 @@ class CreateAccount(MailContextViewMixin,View):
                 for err in errs:
                     error(request, err)
                     #TODO redirect to email resend
+                return redirect('dj-auth:resend_activation')
             return TemplateResponse(
                 request,
                 self.template_name,
                 {'form':bound_form})
-        
+
+
+class ResendActivationEmail(MailContextViewMixin, View):
+
+    form_class = ResendActivationEmailForm
+    success_url = reverse_lazy('dj-auth:login')
+    template_name = 'user/resend_activation.html'
+
+    @method_decorator(csrf_protect)
+    def get(self, request):
+        return TemplateResponse(
+            request,
+            self.template_name,
+            {'form':self.form_class()})
+
+    @method_decorator(csrf_protext)
+    def post(self, request):
+        bound_from = self.form_class(request.POST)
+        if bound_form.is_valid():
+            user = bound_form.save(
+                **self.get_save_kwargs(request))
+            if (user is not None
+                and not bound_form.mail_sent):
+                errs = (
+                    bound_form.non_field_errors())
+                for err in errs:
+                    error(request, err)
+                if errs:
+                    bound_form.errors.pop(
+                        '__all__')
+                return TemplateResponse(
+                    request,
+                    self.template_name,
+                    {'form':bound_form})
+
+            success(
+                request,
+                'Activation Email Sent!')
+            return redirect(self.success_url)
+

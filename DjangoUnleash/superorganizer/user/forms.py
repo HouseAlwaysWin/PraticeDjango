@@ -1,6 +1,10 @@
+import logging
+from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreateionForm
 from .utils import ActivationMailFormMixin
+
+logger = logging.getLogger(__name__)
 
 # UserCreateionForm only in django 1.8
 class UserCreationForm(
@@ -25,4 +29,26 @@ class UserCreationForm(
     class Meta(BaseUserCreationForm.Meta):
         model = get_user_model()
         fields = ('username','email')
-        
+
+class ResendActivationEmailForm(
+        ActivationMailFormMixin,forms.Form):
+
+    email = forms.EmailField()
+
+    mail_validation_error = (
+        'Could ont re-send activation email.'
+        'Please try again later (Sorry!)')
+
+    def save(self, **kwargs):
+        User = get_user_model()
+        try:
+            user = User.objects.get(
+                email=self.cleaned_data['email'])
+        except:
+            logger.warning(
+                'Resend Activation:No User with'
+                'email:{}.'.format(
+                    self.cleaned_data['email']))
+            return None
+        self.send_mail(user=user,**kwargs)
+        return user

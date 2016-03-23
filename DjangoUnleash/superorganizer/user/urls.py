@@ -8,7 +8,8 @@ from django.views.generic import (RedirectView,
                                   TemplateView)
 from .views import (ActivateAccount,
                     CreateAccount,
-                    DisableAccount)
+                    DisableAccount,
+                    ResendActivationEmail)
 
 password_urls = [
     url(r'^change/$',
@@ -72,7 +73,10 @@ password_urls = [
         r'-[0-9A-Za-z]{1,20})/$',
         ActivateAccount.as_view(),
         name='activate'),
-    
+    url(r'^activate/resend/$',
+        ResendActivationEmail.as_view(),
+        name='resend_activation'),
+
     ]
 
 urlpatterns = [
