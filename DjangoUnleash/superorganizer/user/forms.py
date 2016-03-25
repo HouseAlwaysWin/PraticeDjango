@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm as BaseUserCreateionForm
+from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 from .utils import ActivationMailFormMixin
 
 # UserCreateionForm only in django 1.8

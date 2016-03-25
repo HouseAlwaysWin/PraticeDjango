@@ -77,7 +77,7 @@ class DisableAccount(View):
     
 
 class CreateAccount(MailContextViewMixin,View):
-    form_class = UserCreattionForm
+    form_class = UserCreationForm
     success_url = reverse_lazy(
         'dj-auth:create_done')
     template_name = 'user/user_create.html'
@@ -89,14 +89,14 @@ class CreateAccount(MailContextViewMixin,View):
             self.template_name,
             {'form':self.form_class()})
 
-    @method_decorator(csrf_protext)
+    @method_decorator(csrf_protect)
     @method_decorator(sensitive_post_parameters(
         'password1','password2'))
     def post(self, request):
         bound_form =self.form_class(request.POST)
         if bound_form.is_valid():
             bound_form.save(
-                **self.get_save_kwargs*request))
+                **self.get_save_kwargs*request)
             if bound_form.mail_sent:
                 return redirect(
                     self.success_url)

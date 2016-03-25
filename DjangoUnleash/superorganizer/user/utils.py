@@ -2,15 +2,15 @@ import traceback
 import logging
 
 
-from loggin import CRITICAL,ERROR
-from django.template.lodar import render_to_string
+from logging import CRITICAL,ERROR
+from django.template.loader import render_to_string
 from django.contrib.auth.tokens import default_token_generator as token_generator
-from django.sites.shortcuts import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.conf import settings
-from django.core.mail import (BadHeadError,
-                              Send_mail)
+from django.core.mail import (BadHeaderError,
+                              send_mail)
 from django.core.exceptions import ValidationError
 from smtplib import SMTPException
 
@@ -67,12 +67,12 @@ class ActivationMailFormMixin:
         email_template_name = kwargs.get(
             'email_template_name')
         context = kwargs.get('context')
-v        return render_to_string(
+        return render_to_string(
             email_template_name,
             context)
 
     def get_subject(self, **kwargs):
-        subject_template_name = 'subject_template_name')
+        subject_template_name = ('subject_template_name')
         context = kwargs.get('context')
         subject = render_to_string(
             subject_template_name,context)
