@@ -72,7 +72,7 @@ class ActivationMailFormMixin:
             context)
 
     def get_subject(self, **kwargs):
-        subject_template_name = ('subject_template_name')
+        subject_template_name = kwargs.get('subject_template_name')
         context = kwargs.get('context')
         subject = render_to_string(
             subject_template_name,context)
@@ -95,7 +95,7 @@ class ActivationMailFormMixin:
         context.update({
             'domain':current_site.domain,
             'protocol':protocol,
-            'site_name':current_site_name,
+            'site_name':current_site.name,
             'token':token,
             'uid':uid,
             'user':user,

@@ -96,7 +96,7 @@ class CreateAccount(MailContextViewMixin,View):
         bound_form =self.form_class(request.POST)
         if bound_form.is_valid():
             bound_form.save(
-                **self.get_save_kwargs*request)
+                **self.get_save_kwargs(request))
             if bound_form.mail_sent:
                 return redirect(
                     self.success_url)
@@ -106,8 +106,9 @@ class CreateAccount(MailContextViewMixin,View):
                 for err in errs:
                     error(request, err)
                     #TODO redirect to email resend
-            return TemplateResponse(
-                request,
-                self.template_name,
-                {'form':bound_form})
-        
+                    return redirect('dj-auth:resend_activation')
+        return TemplateResponse(
+            request,
+            self.template_name,
+            {'form':bound_form})
+    
