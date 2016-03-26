@@ -126,7 +126,7 @@ class ResendActivationEmail(MailContextViewMixin, View):
             self.template_name,
             {'form':self.form_class()})
 
-    @method_decorator(csrf_protext)
+    @method_decorator(csrf_protect)
     def post(self, request):
         bound_from = self.form_class(request.POST)
         if bound_form.is_valid():
