@@ -12,6 +12,11 @@ from .views import (ActivateAccount,
                     ResendActivationEmail)
 
 password_urls = [
+    url(r'^$',
+        RedirectView.as_view(
+            pattern_name='dj-auth:pw_reset_start',
+            permanent=False)),
+    
     url(r'^change/$',
         auth_views.password_change,
         {'template_name':'user/password_change_form.html',
@@ -95,5 +100,11 @@ urlpatterns = [
              'form':AuthenticationForm}},
         name='logout'),
     url(r'password/',include(password_urls)),
+
+    url(r'activate',
+        RedirectView.as_view(
+            pattern_name=(
+                'dj-auth:resend_activation'),
+            permanent=False)),
     ]
 
