@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.conf import settings
-from django.views.generic import View
+from django.views.generic import (View,
+                                  DetailView)
 from django.contrib.auth import (get_user,
                                  logout)
 from django.contrib.auth.decorators import login_required
@@ -16,8 +17,12 @@ from django.contrib.auth import (get_user,
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
+from user.decorators import class_login_required
+from user.models import Profile
+
 from .forms import (UserCreationForm,ResendActivationEmailForm)
-from .utils import MailContextViewMixin
+from .utils import (MailContextViewMixin,
+                    ProfileGetObjectMixin)
 
 
 class ActivateAccount(View):
@@ -128,7 +133,7 @@ class ResendActivationEmail(MailContextViewMixin, View):
 
     @method_decorator(csrf_protect)
     def post(self, request):
-        bound_from = self.form_class(request.POST)
+        bound_form = self.form_class(request.POST)
         if bound_form.is_valid():
             user = bound_form.save(
                 **self.get_save_kwargs(request))
@@ -146,9 +151,12 @@ class ResendActivationEmail(MailContextViewMixin, View):
                     self.template_name,
                     {'form':bound_form})
 
-            success(
-                request,
-                'Activation Email Sent!')
-            return redirect(self.success_url)
+        success(
+            request,
+            'Activation Email Sent!')
+        return redirect(self.success_url)
 
-
+@class_login_required
+class ProfileDetail(ProfileGetObjectMixin,
+                    DetailView):
+    model = Profile

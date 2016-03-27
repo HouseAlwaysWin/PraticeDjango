@@ -9,6 +9,7 @@ from django.views.generic import (RedirectView,
 from .views import (ActivateAccount,
                     CreateAccount,
                     DisableAccount,
+                    ProfileDetail,
                     ResendActivationEmail)
 
 password_urls = [
@@ -16,7 +17,7 @@ password_urls = [
         RedirectView.as_view(
             pattern_name='dj-auth:pw_reset_start',
             permanent=False)),
-    
+
     url(r'^change/$',
         auth_views.password_change,
         {'template_name':'user/password_change_form.html',
@@ -106,5 +107,8 @@ urlpatterns = [
             pattern_name=(
                 'dj-auth:resend_activation'),
             permanent=False)),
+    url(r'profile/$',
+        ProfileDetail.as_view(),
+        name='profile'),
     ]
 

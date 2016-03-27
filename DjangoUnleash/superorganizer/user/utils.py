@@ -12,6 +12,7 @@ from django.conf import settings
 from django.core.mail import (BadHeaderError,
                               send_mail)
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user
 from smtplib import SMTPException
 
 
@@ -158,11 +159,17 @@ class MailContextViewMixin:
     subject_template_name = (
         'user/subject_create.txt'
     )
-    
+
     def get_save_kwargs(self,request):
         return {
             'email_template_name':self.email_template_name,
             'request':request,
             'subject_template_name':self.subject_template_name,
             }
-    
+
+class ProfileGetObjectMixin:
+
+    def get_object(self, queryset=None):
+        current_user = get_user(self.request)
+        return current_user.profile
+
