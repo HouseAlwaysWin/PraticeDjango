@@ -19,6 +19,7 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from user.decorators import class_login_required
 from user.models import Profile
+from core.utils import UpdateView
 
 from .forms import (UserCreationForm,ResendActivationEmailForm)
 from .utils import (MailContextViewMixin,
@@ -159,4 +160,10 @@ class ResendActivationEmail(MailContextViewMixin, View):
 @class_login_required
 class ProfileDetail(ProfileGetObjectMixin,
                     DetailView):
+    model = Profile
+
+@class_login_required
+class ProfileUpdate(
+        ProfileGetObjectMixin,UpdateView):
+    fileds = ('about',)
     model = Profile
