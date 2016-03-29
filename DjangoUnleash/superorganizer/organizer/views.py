@@ -7,6 +7,11 @@ from django.core.paginator import (Paginator,
                                    EmptyPage,
                                    PageNotAnInteger)
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import (permission_required,
+                                            login_required)
+from django.utils.decorators import method_decorator
+
+from django.contrib.auth import PermissionDenied
 
 from .forms import (TagForm,
                     StartupForm,
@@ -21,6 +26,8 @@ from .utils import (PageLinksMixin,
                     NewsLinkFormMixin,
                     StartupContextMixin)
 
+
+
 class TagList(PageLinksMixin, ListView):
     paginate_by = 5
     model = Tag
@@ -30,10 +37,19 @@ class TagDetail(DetailView):
 
 
 
+
 class TagCreate(CreateView):
     form_class = TagForm
     model = Tag
 
+    @method_decorator(login_required)
+    @method_decorator(
+        permission_required(
+            'organizer.add_tag',
+            raise_exception=True,))
+    def dispatch(self,request, *args, **kwargs):
+        return super().dispatch(
+            request,*args, **kwargs)
 
 class TagUpdate(UpdateView):
     form_class = TagForm
