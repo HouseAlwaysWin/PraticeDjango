@@ -53,7 +53,8 @@ class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
 
-    
+@require_authenticated_permission(
+    'organizer.delete_tag')
 class TagDelete(DeleteView):
     model = Tag
     success_url = reverse_lazy(
@@ -71,12 +72,16 @@ class StartupDetail(DetailView):
     model = Startups
     template_name = 'organizer/startup_detail.html'
 
-
+@require_authenticated_permission(
+    'organizer.add_startups')
 class StartupCreate(CreateView):
     form_class = StartupForm
     model = Startups
     template_name = 'organizer/startup_form.html'
 
+
+@require_authenticated_permission(
+    'organizer.change_startups')
 class StartupUpdate(UpdateView):
     form_class = StartupForm
     model = Startups
