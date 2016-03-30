@@ -14,7 +14,8 @@ from django.utils.decorators import method_decorator
 
 from django.contrib.auth import PermissionDenied
 
-from user.decorators import require_authenticated_permission
+from user.decorators import (require_authenticated_permission,
+                             class_login_required)
                              
 
 from .forms import (TagForm,
@@ -39,29 +40,18 @@ class TagList(PageLinksMixin, ListView):
 class TagDetail(DetailView):
     model = Tag
 
-
+@require_authenticated_permission(
+    'organizer.add_tag')
 class TagCreate(CreateView):
     form_class = TagForm
     model = Tag
 
-    @method_decorator(login_required)
-    @method_decorator(
-        permission_required(
-            'organizer.add_tag',
-            raise_exception=True,))
-    def dispatch(self,request, *args, **kwargs):
-        return super().dispatch(
-            request,*args, **kwargs)
-
+        
+@require_authenticated_permission(
+    'organizer.change_tag')
 class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
-
-    @method_decorator(
-        require_authenticated_permission(
-            'organizer.add_tag'))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     
 class TagDelete(DeleteView):
