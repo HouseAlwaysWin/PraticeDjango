@@ -8,16 +8,20 @@
 <h2>{{ tag.name|title }}</h2>
 {% if perms.organizer.change_tag or perms.organizer.delete_tag %}
 <ul class="inline">
+  {% if perms.organizer.change_tag %}
   <li>
     <a
        href="{{ tag.get_update_url }}"
        class="button">
       Edit Tag</a></li>
+  {% endif %}
+  {% if perms.organizer.delete_tag %}
   <li>
     <a
        href="{{ tag.get_delete_url }}"
        class="button">
       Delete Tag</a></li>
+  {% endif %}
 </ul>
 {% endif %}
 
@@ -39,6 +43,7 @@
 {% if tag.blog_posts.all %}
 <section>
   <h3>Blog Post{{ tag.startups_set.count|pluralize }}</h3>
+  
   <ul>
     {% for post in tag.blog_posts.all %}
     <li><a href="{{ post.get_absolute_url }}">{{ post.title|title }}</a></li>
