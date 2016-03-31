@@ -1,10 +1,10 @@
-from django.conf.urls import url
+from django.conf.urls import url,include
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import RedirectView
 from django.core.urlresolvers import reverse_lazy
 
-password_url = [
+password_urls = [
     url(r'^change/$',
         auth_views.password_change,
         {'template_name':
