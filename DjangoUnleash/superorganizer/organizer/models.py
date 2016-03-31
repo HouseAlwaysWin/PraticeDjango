@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from datetime import date
 
 class Tag(models.Model):
 
@@ -26,6 +27,10 @@ class Tag(models.Model):
     def get_delete_url(self):
         return reverse('organizer_tag_delete',
                        kwargs={'slug':self.slug})
+
+    def published_posts(self):
+        return self.blog_posts.filter(
+            pub_date__lt=date.today())
 
 class Startups(models.Model):
 

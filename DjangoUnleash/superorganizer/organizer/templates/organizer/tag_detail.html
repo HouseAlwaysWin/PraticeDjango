@@ -40,6 +40,7 @@
   </ul>
 </section>
 {% endif %}
+{% if perms.blog.view_future_post %}
 {% if tag.blog_posts.all %}
 <section>
   <h3>Blog Post{{ tag.startups_set.count|pluralize }}</h3>
@@ -50,10 +51,26 @@
     {% endfor %}
   </ul>
 </section>
-{% else %}
-<p>This Tag is not related to any blog posts.</p>
 {% endif %}
 {% if not tag.startups_set.all and not tag.blog_posts.all %}
 <p>This tag is not related to any content.</p>
+{% endif %}
+
+{% else %}
+{% if tag.published_posts|length > 0 %}
+<section>
+  <h3>Blog Post{{ tag.published_post|pluralize }}</h3>
+  <ul>
+    {% for post in tag.published_post %}
+    <li><a href="{{ post.get_absolute_url }}">
+	{{ post.title|title }}
+    </a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% if not tag.startup_set.all and not tag.published_posts %}
+<p> This tag is not related to any content.</p>
+{% endif %}
 {% endif %}
 {% endblock %}
