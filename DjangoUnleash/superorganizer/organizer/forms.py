@@ -35,4 +35,4 @@ class NewsLinkForm(SlugCleanMixin,forms.ModelForm):
     class Meta:
         model = NewsLink
         fields = '__all__'
-        widgets = {'startup':HiddenInput()}
+        widgets = {'startups':HiddenInput()}

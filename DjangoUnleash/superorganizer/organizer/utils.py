@@ -22,7 +22,7 @@ class NewsLinkGetObjectMixin:
     def get_object(self, queryset=None):
         startup_slug = self.kwargs.get(
             self.startup_slug_url_kwarg)
-        newslink_slug = slef.kwargs.get(
+        newslink_slug = self.kwargs.get(
             self.slug_url_kwarg)
         return get_object_or_404(
             NewsLink,
@@ -79,21 +79,21 @@ class PageLinksMixin:
 
 class StartupContextMixin:
     startup_slug_url_kwarg = 'startup_slug'
-    startup_context_object_name = 'startup'
+    startup_context_object_name = 'startups'
 
     def get_context_data(self, **kwargs):
-        if hasattr(self,'startup'):
+        if hasattr(self,'startups'):
             context = {
-                self.startup_context_object_name: startup,}
+                self.startup_context_object_name: self.startups,}
         else:
             startup_slug = self.kwargs.get(
                 self.startup_slug_url_kwarg)
             startup = get_object_or_404(
-                Startup,
+                Startups,
                 slug__iexact=startup_slug)
             
             context = {
-                self.startup_context_object_naem:startup,
+                self.startup_context_object_name:startup,
             }
             context.update(kwargs)
              

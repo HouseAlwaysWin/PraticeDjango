@@ -54,7 +54,7 @@ class Startups(models.Model):
     def get_newslink_create_url(self):
         return reverse(
             'organizer_newslink_create',
-            kwarg={'startup_slug':self.slug})
+            kwargs={'startup_slug':self.slug})
 
     def get_update_url(self):
         return reverse('organizer_startup_update',

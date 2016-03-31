@@ -94,10 +94,10 @@ class StartupDelete(DeleteView):
     template_name = ('organizer/startup_confirm_delete.html')
 
 
-class NewsLinkCreate(NewsLinkFormMixin,
-                     NewsLinkGetObjectMixin,
-                     StartupContextMixin,
-                     CreateView):
+class NewsLinkCreate(
+        NewsLinkGetObjectMixin,
+        StartupContextMixin,
+        CreateView):
     
     form_class = NewsLinkForm
     model = NewsLink
@@ -106,7 +106,7 @@ class NewsLinkCreate(NewsLinkFormMixin,
         startup_slug = self.kwargs.get(
             self.startup_slug_url_kwarg)
         self.startup = get_object_or_404(
-            Startup, slug__iexact=startup_slug)
+            Startups, slug__iexact=startup_slug)
         initial = {
             self.startup_context_object_name:
             self.startup,

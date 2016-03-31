@@ -56,7 +56,7 @@
 	<h3>Recent News</h3>
 	{% if perms.organizer.add_newlink %}
 	<p>
-	  <a href="{{ organizer_newslink_create_url }}"
+	  <a href="{{ startups.get_newslink_create_url }}"
 	     class="button">
 	    Add Article</a></p>
 	{% endif %}
@@ -93,7 +93,7 @@
 	  {% endif %}
 	  <p>
 	    <a
-	       href="{{ startup.get_newlink_create_url }}"
+	       href="{{ startups.get_newslink_create_url }}"
 	       class="button">
 	      Add Article</a></p>
 	</section>
