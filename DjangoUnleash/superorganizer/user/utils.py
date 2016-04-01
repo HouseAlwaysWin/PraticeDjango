@@ -1,5 +1,7 @@
 import traceback
-
+import logging
+from logging import (CRITICAL,
+                     ERROR)
 from smtplib import SMTPException
 
 from django.contrib.auth.tokens import dafault_token_generator as token_generator
@@ -13,9 +15,11 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 
+logger = logging.getLogger(__name__)
 
 class ActivationMailFormMixin:
     mail_validation_error = ''
+
 
     @property
     def mail_sent(self):
@@ -28,6 +32,32 @@ class ActivationMailFormMixin:
         raise TypeError(
             'Cannot set mail_sent attribute.')
 
+    def log_mail_error(self, **kwargs):
+        msg_list = [
+            'Activation email did not send.\n',
+            'from_email:{from_email}\n'
+            'subject:{subject}\n'
+            'message:{message}\n',]
+
+        recipient_lsit = kwargs.get(
+            'recipient_list',[])
+        for recipient in recipient_list:
+            msg_list.insert(
+                1, 'recipient:{r}\n'.format(
+                    r=recipient))
+        if 'error' in kwargs:
+            level = ERROR
+            error_msg = ('error: {0.__class__.__name__}\n'
+                         'args:{0.args}\n')
+            error_info = error_msg.format(
+                kwargs['error'])
+            msg_list.insert(1, error_info)
+        else:
+            level = CRITICAL
+
+        msg = ''.join(msg_list).format(**kwargs)
+        logger.log(level, msg)
+    
     def get_message(self, **kwargs):
         email_template_name = kwargs.get(
             'email_template_name')
@@ -121,3 +151,14 @@ class ActivationMailFormMixin:
                 ValidationError(self.mail_validation_error,
                                 code=error))
             return self.mail_sent
+
+class MailContextViewMixin:
+    email_template_name = 'user/email_create.txt'
+    subject_template_name = (
+        'user/subject_create.txt')
+
+    def get_save_kwargs(self, request):
+        return {
+            'email_template_name':self.email_template_name,
+            'request':request,
+            'subject_template_name':self.subject_template_name,}
