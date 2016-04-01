@@ -57,6 +57,10 @@ password_urls = [
          'extra_context':
          {'form':AuthenticationForm}},
         name='pw_reset_complete'),
+
+    url(r'disable/$',
+        DisableAccount.as_view(),
+        name='disable'),
 ]
 
 urlpatterns = [
