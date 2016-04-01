@@ -1,9 +1,12 @@
 from django.conf.urls import url,include
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic import RedirectView
+from django.views.generic import (RedirectView,
+                                  TemplateView)
 from django.core.urlresolvers import reverse_lazy
-from user.views import DisableAccount
+from user.views import (ActivateAccount,
+                        CreateAccount,
+                        DisableAccount)
 
 password_urls = [
     url(r'^change/$',
@@ -11,7 +14,7 @@ password_urls = [
         {'template_name':
          'user/password_change_form.html',
          'post_change_redirect':reverse_lazy(
-             'pwURL:pw_change_done')},
+             'dj-auth:pw_change_done')},
         name='pw_change'),
     
     url(r'^change/done/$',
@@ -30,7 +33,7 @@ password_urls = [
          'user/password_reset_subject.txt',
          'post_reset_redirect':
          reverse_lazy(
-             'pwURL:pw_reset_sent')},
+             'dj-auth:pw_reset_sent')},
         name='pw_reset_start'),
 
     url(r'^reset/sent/$',
@@ -48,7 +51,7 @@ password_urls = [
          'user/password_reset_confirm.html',
          'post_reset_redirect':
          reverse_lazy(
-             'pwURL:pw_reset_complete')},
+             'dj-auth:pw_reset_complete')},
         name='pw_reset_confirm'),
 
     url(r'reset/done/$',
@@ -62,6 +65,7 @@ password_urls = [
     url(r'disable/$',
         DisableAccount.as_view(),
         name='disable'),
+
 ]
 
 urlpatterns = [
@@ -69,6 +73,11 @@ urlpatterns = [
         RedirectView.as_view(
             pattern_name='dj-auth:login',
             permanent=False)),
+
+    url(r'^create/$',
+        CreateAccount.as_view(),
+        name='create'),
+    
     url(r'^login/$',
         auth_views.login,
         {'template_name':'user/login.html'},
