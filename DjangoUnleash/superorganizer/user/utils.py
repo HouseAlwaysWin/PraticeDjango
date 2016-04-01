@@ -1,0 +1,123 @@
+import traceback
+
+from smtplib import SMTPException
+
+from django.contrib.auth.tokens import dafault_token_generator as token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.conf import settings
+from django.core.mail import (BadHeaderError,
+                              send_mail)
+from django.core.exceptions import ValidationError
+
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.template.loader import render_to_string
+
+
+class ActivationMailFormMixin:
+    mail_validation_error = ''
+
+    @property
+    def mail_sent(self):
+        if hasattr(self, '_mail_sent'):
+            return self._mail_sent
+        return False
+
+    @mail_sent.setter
+    def set_mail_sent(self, value):
+        raise TypeError(
+            'Cannot set mail_sent attribute.')
+
+    def get_message(self, **kwargs):
+        email_template_name = kwargs.get(
+            'email_template_name')
+        context = kwargs.get('context')
+        return render_to_string(
+            email_template_name,context)
+
+    def get_subject(self, **kwargs):
+        subject_template_name = kwargs.get(
+            'subject_template_name')
+        context = kwargs.get('context')
+        subject = render_to_string(
+            subject_template_name,context)
+        subject = ''.join(subject.splitlines())
+
+        return subject
+
+    def get_context_data(
+            self, requset, user, context=None):
+        if context is None:
+            context = dict()
+            
+        current_site = get_current_site(request)
+        
+        if request.is_secure():
+            protocol = 'https'
+        else:
+            protocol = 'http'
+        token = token_generator.make_token(user)
+        uid = urlsafe_base4_encode(
+            force_bytes(user.pk))
+
+        context.update({
+            'domain':current_site.domain,
+            'protocol':protocol,
+            'site_name':current_site.name,
+            'token':token,
+            'uid':uid,
+            'user':user,
+            })
+        return context 
+
+    def _send_mail(self, request, user, **kwargs):
+        kwargs['context'] = self.get_context_data(
+            request, user)
+        mail_kwargs = {
+            "subject":self.get_subject(**kwargs),
+            "message":self.get_message(**kwargs),
+            "from_email":(settings.DEFAULT_FROM_EMAIL),
+            "recipient_list":[user.email],}
+
+        try:
+            # number_sent will be 0 or 1
+            number_sent = send_mail(**mail_kwargs)
+        except Exception as error:
+            self.log_mail_error(
+                error=error,**mail_kwargs)
+            if isinstance(error,BadHeadError):
+                err_code = 'badheader'
+            elif isinstance(error, SMTPException):
+                err_code = 'smtperror'
+            else:
+                err_code = 'unexceptederror'
+            return (False,err_code)
+        else:
+            if number_sent > 0:
+                return (True,None)
+
+            self.log_mail_error(**mail_kwargs)
+            return (False,'unknownerror')
+                
+    def send_mail(self, user, **kwargs):
+        request = kwargs.pip('request',None)
+        if request is None:
+            tb = traceback.format_stack()
+            tb = ['  ' + line for line in tb]
+            logger.warning(
+                'send_mail called without'
+                'request.\nTraceback:\n{}'.format(
+                    ''.join(tb)))
+            self._mail_sent = False
+            return self.mail_sent
+        
+        self._mail_sent, error = (
+            self._send_mail(
+                request, user, **kwargs))
+
+        if not self.mail_sent:
+            self.add_error(
+                None,           # no field - form error
+                ValidationError(self.mail_validation_error,
+                                code=error))
+            return self.mail_sent

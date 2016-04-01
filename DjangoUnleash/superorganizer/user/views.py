@@ -5,11 +5,11 @@ from django.contrib.auth import get_user, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-from django.templates.response import TemplateResponse
+from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
 
 from django.views.generic import View
-from django.views.decorators.csrf import csrf_protext
+from django.views.decorators.csrf import csrf_protect
 
 class DisableAccount(View):
     success_url = settings.LOGIN_REDIRECT_URL
