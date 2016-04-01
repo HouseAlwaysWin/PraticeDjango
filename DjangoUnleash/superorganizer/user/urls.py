@@ -49,6 +49,14 @@ password_urls = [
          reverse_lazy(
              'pwURL:pw_reset_complete')},
         name='pw_reset_confirm'),
+
+    url(r'reset/done/$',
+        auth_view.password_reset_complete,
+        {'template_name':
+         'user/password_reset_complete.html',
+         'extra_context':
+         {'form':AuthenticationForm}},
+        name='pw_reset_complete'),
 ]
 
 urlpatterns = [
