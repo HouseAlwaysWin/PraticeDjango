@@ -1,0 +1,24 @@
+{% extends parent_template|default:"user/base_user.html" %}
+
+{% block title %}
+{{ block.super }} - Create New Account
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="offset-by-two eight columns">
+    <div class="center">
+      <form
+	 action="{% url 'dj-auth:create' %}"
+	 method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submmit">
+	  Create New Account</button>
+      </form>
+      <a href="{% url 'dj-auth:resend_activation' %}">
+	Lost Activation E-mail?</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

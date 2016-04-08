@@ -6,9 +6,15 @@ from django.views.generic import (RedirectView,
 from django.core.urlresolvers import reverse_lazy
 from user.views import (ActivateAccount,
                         CreateAccount,
-                        DisableAccount)
+                        DisableAccount,
+                        ResendActivationEmail)
 
 password_urls = [
+    url(r'^$',
+        RedirectView.as_view(
+            pattern_name='dj-auth:pw_reset_start',
+            permanent=False)),
+    
     url(r'^change/$',
         auth_views.password_change,
         {'template_name':
@@ -66,6 +72,15 @@ password_urls = [
         DisableAccount.as_view(),
         name='disable'),
 
+    url(r'activate',
+        RedirectView.as_view(
+            pattern_name=('dj-auth:resend_activation'),
+            permanent=False)),
+
+    url(r'activate/resend/$',
+        ResendActivationEmail.as_view(),
+        name='resend_activation'),
+
 ]
 
 urlpatterns = [
@@ -88,6 +103,7 @@ urlpatterns = [
          'extra_context':{
              'form':AuthenticationForm}},
         name='logout'),
+    
     # User's registery url
     url(r'^password/',
         include(password_urls)),

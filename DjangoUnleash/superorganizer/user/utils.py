@@ -76,7 +76,7 @@ class ActivationMailFormMixin:
         return subject
 
     def get_context_data(
-            self, requset, user, context=None):
+            self, request, user, context=None):
         if context is None:
             context = dict()
             
@@ -87,7 +87,7 @@ class ActivationMailFormMixin:
         else:
             protocol = 'http'
         token = token_generator.make_token(user)
-        uid = urlsafe_base4_encode(
+        uid = urlsafe_base64_encode(
             force_bytes(user.pk))
 
         context.update({
@@ -130,7 +130,7 @@ class ActivationMailFormMixin:
             return (False,'unknownerror')
                 
     def send_mail(self, user, **kwargs):
-        request = kwargs.pip('request',None)
+        request = kwargs.pop('request',None)
         if request is None:
             tb = traceback.format_stack()
             tb = ['  ' + line for line in tb]
