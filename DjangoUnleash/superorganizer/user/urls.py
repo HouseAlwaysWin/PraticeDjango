@@ -16,7 +16,7 @@ password_urls = [
             permanent=False)),
     
     url(r'^change/$',
-        auth_views.password_change,
+        auth_views.password_change, # django's auth app
         {'template_name':
          'user/password_change_form.html',
          'post_change_redirect':reverse_lazy(
@@ -24,7 +24,7 @@ password_urls = [
         name='pw_change'),
     
     url(r'^change/done/$',
-        auth_views.password_change_done,
+        auth_views.password_change_done, # django's auth app
         {'template_name':
          'user/password_change_done.html'},
         name='pw_change_done'),
@@ -68,10 +68,7 @@ password_urls = [
          {'form':AuthenticationForm}},
         name='pw_reset_complete'),
 
-    url(r'disable/$',
-        DisableAccount.as_view(),
-        name='disable'),
-
+   
     url(r'activate',
         RedirectView.as_view(
             pattern_name=('dj-auth:resend_activation'),
@@ -92,6 +89,19 @@ urlpatterns = [
     url(r'^create/$',
         CreateAccount.as_view(),
         name='create'),
+
+    url(r'^create/done$',
+        TemplateView.as_view(
+            template_name=(
+                'user/user_create_done.html')),
+        name='create_done'),
+
+    url(r'^activate/'
+        r'(?P<uid64>[0-9A-Za-z_\-]+)/'
+        r'(?P<token>[0-9A-Za-z]{1,13}'
+        r'-[0-9A-Za-z]{1,20})/$',
+        ActivateAccount.as_view(),
+        name='activate'),
     
     url(r'^login/$',
         auth_views.login,
@@ -103,6 +113,10 @@ urlpatterns = [
          'extra_context':{
              'form':AuthenticationForm}},
         name='logout'),
+
+    url(r'^disable/$',
+        DisableAccount.as_view(),
+        name='disable'),
     
     # User's registery url
     url(r'^password/',

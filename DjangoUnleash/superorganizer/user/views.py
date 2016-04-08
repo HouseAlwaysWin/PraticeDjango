@@ -1,13 +1,19 @@
 from django.shortcuts import redirect
 
-from django.contrib.auth import get_user, logout
+from django.contrib.auth import (get_user,
+                                 logout ,
+                                 get_user_model)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator as token_generator
+from django.contrib.messages import (error,
+                                     success)
 from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 
 from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_protect
@@ -16,7 +22,9 @@ from django.views.decorators.cache import never_cache
 
 from user.forms import (UserCreationForm,
                         ResendActivationEmailForm)
-from user.utils import MailContextViewMixin,ActivationMailFormMixin
+
+from user.utils import (MailContextViewMixin,
+                        ActivationMailFormMixin)
 
 
 
@@ -50,7 +58,7 @@ class ActivateAccount(View):
 
     @method_decorator(never_cache)
     def get(self, request, uidb64, token):
-        User = get_uset_model()
+        User = get_user_model()
         try:
             uid = force_text(
                 urlsafe_base64_decode(uidb64))

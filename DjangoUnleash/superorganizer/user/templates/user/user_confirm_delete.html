@@ -1,6 +1,6 @@
 {% extends parent_template|default:"user/base_user.html" %}
 
-{%¡@block title %}
+{% block title %}
 {{ block.super }} - Disable Accout
 {% endblock %}
 
@@ -10,7 +10,7 @@
     <p>Disable your account?</p>
     <p>This cannot be undone.</p>
     <form
-       action="{% url 'pwURL:disable' %}"
+       action="{% url 'dj-auth:disable' %}"
        method="post">
       {% csrf_token %}
       <button type="submit">

@@ -106,7 +106,8 @@ class ActivationMailFormMixin:
         mail_kwargs = {
             "subject":self.get_subject(**kwargs),
             "message":self.get_message(**kwargs),
-            "from_email":(settings.DEFAULT_FROM_EMAIL),
+            "from_email":(
+                settings.DEFAULT_FROM_EMAIL),
             "recipient_list":[user.email],}
 
         try:
@@ -148,8 +149,9 @@ class ActivationMailFormMixin:
         if not self.mail_sent:
             self.add_error(
                 None,           # no field - form error
-                ValidationError(self.mail_validation_error,
-                                code=error))
+                ValidationError(
+                    self.mail_validation_error,
+                    code=error))
             return self.mail_sent
 
 class MailContextViewMixin:
@@ -159,6 +161,8 @@ class MailContextViewMixin:
 
     def get_save_kwargs(self, request):
         return {
-            'email_template_name':self.email_template_name,
+            'email_template_name':
+            self.email_template_name,
             'request':request,
-            'subject_template_name':self.subject_template_name,}
+            'subject_template_name':
+            self.subject_template_name,}

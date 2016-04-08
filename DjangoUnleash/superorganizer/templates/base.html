@@ -35,6 +35,8 @@
             <li><a href="{% url 'dj-auth:login' %}?next={{ request.path }}">
                 Log In</a></li>
             {% endif %}
+	    <li><a href="{% url 'dj-auth:create' %}">
+		Register</a></li>
           </ul>
         </div>
       </div>
