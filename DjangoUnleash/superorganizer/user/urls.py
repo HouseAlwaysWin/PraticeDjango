@@ -74,10 +74,6 @@ password_urls = [
             pattern_name=('dj-auth:resend_activation'),
             permanent=False)),
 
-    url(r'activate/resend/$',
-        ResendActivationEmail.as_view(),
-        name='resend_activation'),
-
 ]
 
 urlpatterns = [
@@ -102,6 +98,10 @@ urlpatterns = [
         r'-[0-9A-Za-z]{1,20})/$',
         ActivateAccount.as_view(),
         name='activate'),
+
+    url(r'^activate/resend/$',
+        ResendActivationEmail.as_view(),
+        name='resend_activation'),
     
     url(r'^login/$',
         auth_views.login,
