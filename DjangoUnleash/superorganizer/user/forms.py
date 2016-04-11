@@ -27,6 +27,13 @@ class UserCreationForm(
 
         user.save()
         self.save_m2m()
+        Profile.objects.update_or_create(
+            user=user,
+            defaults={
+                'slug':slugify(
+                    user.get_username()),
+                })
+        
         if send_mail:
             self.send_mail(user=user, **kwargs)
         return user

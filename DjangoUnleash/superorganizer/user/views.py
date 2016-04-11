@@ -15,7 +15,8 @@ from django.utils.decorators import method_decorator
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 
-from django.views.generic import View
+from django.views.generic import (View,
+                                  DetailView)
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
@@ -24,7 +25,11 @@ from user.forms import (UserCreationForm,
                         ResendActivationEmailForm)
 
 from user.utils import (MailContextViewMixin,
-                        ActivationMailFormMixin)
+                        ProfileGetObjectMixin)
+
+from user.decorators import class_login_required
+from user.models import Profile
+
 
 
 
@@ -117,6 +122,12 @@ class CreateAccount(MailContextViewMixin,View):
             request,
             self.template_name,
             {'form':bound_form})
+
+
+@class_login_required
+class ProfileDetail(
+        ProfileGetObjectMixin,DetailView):
+    model = Profile
     
 class ResendActivationEmail(
         MailContextViewMixin,View):

@@ -5,6 +5,7 @@ from logging import (CRITICAL,
 from smtplib import SMTPException
 
 from django.contrib.auth.tokens import default_token_generator as token_generator
+from django.contrib.auth import get_user
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
 from django.core.mail import (BadHeaderError,
@@ -55,7 +56,7 @@ class ActivationMailFormMixin:
         else:
             level = CRITICAL
 
-        msg = ''.join(msg_list).format(**kwargs)
+        Msg = ''.join(msg_list).format(**kwargs)
         logger.log(level, msg)
     
     def get_message(self, **kwargs):
@@ -166,3 +167,9 @@ class MailContextViewMixin:
             'request':request,
             'subject_template_name':
             self.subject_template_name,}
+
+class ProfileGetObjectMixin:
+
+    def get_object(self,queryset=None):
+        current_user = get_user(self.request)
+        return current_user.profile

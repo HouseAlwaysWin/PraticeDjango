@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse_lazy
 from user.views import (ActivateAccount,
                         CreateAccount,
                         DisableAccount,
-                        ResendActivationEmail)
+                        ResendActivationEmail,
+                        ProfileDetail)
 
 password_urls = [
     url(r'^$',
@@ -123,6 +124,10 @@ urlpatterns = [
     url(r'^disable/$',
         DisableAccount.as_view(),
         name='disable'),
+
+    url(r'^profile/$',
+        ProfileDetail.as_view(),
+        name='profile'),
     
     # User's registery url
     url(r'^password/',
