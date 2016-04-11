@@ -8,7 +8,8 @@ from user.views import (ActivateAccount,
                         CreateAccount,
                         DisableAccount,
                         ResendActivationEmail,
-                        ProfileDetail)
+                        ProfileDetail,
+                        ProfileUpdate)
 
 password_urls = [
     url(r'^$',
@@ -128,6 +129,10 @@ urlpatterns = [
     url(r'^profile/$',
         ProfileDetail.as_view(),
         name='profile'),
+
+    url(r'profile/edit/$',
+        ProfileUpdate.as_view(),
+        name='profile_update'),
     
     # User's registery url
     url(r'^password/',

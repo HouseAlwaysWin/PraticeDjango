@@ -18,6 +18,8 @@
 	  Change Password</a></li>
       <li><a href="{% url 'dj-auth:disable' %}">
 	  Disable Account</a></li>
+      <li><a href="{{ profile.get_update_url }}">
+	  Edit Your Profile</a></li>
     </ul>
   </div>
 </div><!--row-->

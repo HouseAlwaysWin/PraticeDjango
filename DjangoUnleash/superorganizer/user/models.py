@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 class Profile(models.Model):
     user = models.OneToOneField(
@@ -11,4 +12,7 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.get_username()
+
+    def get_update_url(self):
+        return reverse('dj-auth:profile_update')
 

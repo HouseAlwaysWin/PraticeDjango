@@ -1,3 +1,4 @@
+from core.utils import UpdateView
 from django.shortcuts import redirect
 
 from django.contrib.auth import (get_user,
@@ -127,6 +128,12 @@ class CreateAccount(MailContextViewMixin,View):
 @class_login_required
 class ProfileDetail(
         ProfileGetObjectMixin,DetailView):
+    model = Profile
+
+@class_login_required
+class ProfileUpdate(
+        ProfileGetObjectMixin,UpdateView):
+    fields = ('about',)
     model = Profile
     
 class ResendActivationEmail(
