@@ -102,6 +102,12 @@ urlpatterns = [
     url(r'^activate/resend/$',
         ResendActivationEmail.as_view(),
         name='resend_activation'),
+
+    url(r'^activate',
+        RedirectView.as_view(
+            pattern_name=
+            ('dj-auth:resend_activation'),
+            permanent=False)),
     
     url(r'^login/$',
         auth_views.login,

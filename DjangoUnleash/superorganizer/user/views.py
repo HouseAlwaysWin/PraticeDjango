@@ -110,8 +110,8 @@ class CreateAccount(MailContextViewMixin,View):
                 for err in errs:
                     error(request,err)
                     # TODO: redirect to email resend
-            return redirect(
-                'dj-auth:resend_activation')
+                return redirect(
+                    'dj-auth:resend_activation')
 
         return TemplateResponse(
             request,
@@ -138,7 +138,7 @@ class ResendActivationEmail(
         if bound_form.is_valid():
             user = bound_form.save(**self.get_save_kwargs(request))
 
-            if (user is not None and not bound_form.mail.sent):
+            if (user is not None and not bound_form.mail_sent):
                 errs = (
                     bound_form.non_field_errors())
                 for err in errs:

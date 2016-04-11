@@ -8,17 +8,17 @@
 <div class="row">
   <div class="offset-by-two eight columns">
     <div class="center">
-      <form
-	 action="{% url 'dj-auth:create' %}"
-	 method="post">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<button type="submmit">
-	  Create New Account</button>
-      </form>
       <a href="{% url 'dj-auth:resend_activation' %}">
-	Lost Activation E-mail?</a>
+	Lost Activation E-Mail?</a>
     </div>
+    <form
+       action="{% url 'dj-auth:create' %}"
+       method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submmit">
+	Create New Account</button>
+    </form>
   </div>
 </div>
 {% endblock %}
