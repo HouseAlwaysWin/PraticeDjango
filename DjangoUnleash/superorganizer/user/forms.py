@@ -2,20 +2,21 @@ import logging
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 from django.contrib.auth import get_user_model
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.text import slugify
+
 from user.utils import ActivationMailFormMixin
+from user.models import Profile
 
 logger = logging.getLogger(__name__)
 
 class UserCreationForm(
         ActivationMailFormMixin,
         BaseUserCreationForm):
+    
     mail_validation_error = ('User created. Could not send activation '
                              'email. Please try again later. (Sorry!')
 
-    class Meta(BaseUserCreationForm.Meta):
-        model = get_user_model()
-        fields = ('username','email')
-        
     def save(self, **kwargs):
         user = super().save(commit=False)
         if not user.pk:
@@ -29,6 +30,24 @@ class UserCreationForm(
         if send_mail:
             self.send_mail(user=user, **kwargs)
         return user
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        disallowed = (
+            'activate',
+            'create',
+            'disable',
+            'login',
+            'logout',
+            'password',
+            'profile',
+            )
+        if username in disallowed:
+            raise ValidaionError(
+                "A user with that username"
+                " already exists"
+                )
+        return username
 
     class Meta(BaseUserCreationForm.Meta):
         model = get_user_model()
