@@ -33,15 +33,4 @@ class Migration(migrations.Migration):
                 ('objects', user.models.UserManager()),
             ],
         ),
-        migrations.CreateModel(
-            name='Profile',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('slug', models.SlugField(max_length=30, unique=True)),
-                ('about', models.TextField()),
-                ('name', models.CharField(max_length=255)),
-                ('joined', models.DateTimeField(verbose_name='Date Joined', auto_now_add=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
     ]
