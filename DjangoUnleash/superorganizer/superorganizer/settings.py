@@ -82,6 +82,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'superorganizer.wsgi.application'
 
 
+# User
+# https://doce.djangoproject.com/en/1.9/topics/auth/customizing/
+
+AUTH_USER_MODEL = 'user.User'
+
+
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
