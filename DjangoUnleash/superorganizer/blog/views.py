@@ -14,7 +14,8 @@ from django.core.urlresolvers import reverse_lazy
 from .forms import PostForm
 from .models import Post
 from .utils import (DateObjectMixin,
-                    AllowFuturePermissionMixin)
+                    AllowFuturePermissionMixin,
+                    PostFormValidMixin)
 from core.utils import UpdateView
 from user.decorators import require_authenticated_permission
 
@@ -26,7 +27,7 @@ class PostDetail(DateObjectMixin, DetailView):
     
 @require_authenticated_permission(
     'blog.create_post')
-class PostCreate(CreateView):
+class PostCreate(PostFormValidMixin,CreateView):
     form_class = PostForm
     model = Post
 
@@ -42,7 +43,7 @@ class PostList(AllowFuturePermissionMixin,ArchiveIndexView):
     
 @require_authenticated_permission(
     'blog.change_post')
-class PostUpdate(DateObjectMixin, UpdateView):
+class PostUpdate(PostFormValidMixin,DateObjectMixin, UpdateView):
 
     date_field = 'pub_date'
     form_class = PostForm

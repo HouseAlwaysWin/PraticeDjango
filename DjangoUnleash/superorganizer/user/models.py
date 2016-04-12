@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import (AbstractBaseUser,
                                         BaseUserManager,
                                         PermissionsMixin)
+from datetime import date
 
 class Profile(models.Model):
     user = models.OneToOneField(
@@ -97,6 +98,10 @@ class User(AbstractBaseUser,
 
     def get_short_name(self):
         return self.profile.name
+
+    def published_posts(self):
+        return self.blog_posts.filter(
+            pub_date__lt=date.today())
 
 
     
