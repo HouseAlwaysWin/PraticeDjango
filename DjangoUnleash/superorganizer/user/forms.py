@@ -17,6 +17,12 @@ class UserCreationForm(
     mail_validation_error = ('User created. Could not send activation '
                              'email. Please try again later. (Sorry!')
 
+    name = forms.CharField(
+        max_length=255,
+        help_text=(
+            "The name displayed on your "
+            "public profile."))
+
     def save(self, **kwargs):
         user = super().save(commit=False)
         if not user.pk:
@@ -30,16 +36,17 @@ class UserCreationForm(
         Profile.objects.update_or_create(
             user=user,
             defaults={
+                'name':slef.cleaned_data['name'],
                 'slug':slugify(
-                    user.get_username()),
+                    self.cleaned_data['name']),
                 })
         
         if send_mail:
             self.send_mail(user=user, **kwargs)
         return user
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
+    def clean_name(self):
+        name = self.cleaned_data['name']
         disallowed = (
             'activate',
             'create',
@@ -49,12 +56,12 @@ class UserCreationForm(
             'password',
             'profile',
             )
-        if username in disallowed:
+        if name in disallowed:
             raise ValidaionError(
                 "A user with that username"
                 " already exists"
                 )
-        return username
+        return name
 
     class Meta(BaseUserCreationForm.Meta):
         model = get_user_model()
