@@ -8,10 +8,16 @@
 
 {% block content %}
 <div class="row">
+  {% if user.pk == profile.user.pk %}
   <div class="offset-by-two five columns">
-    <h2>About {{ profile.user.get_username }}</h2>
-    {{ profile.about|default:"No Profile"|linebreaks }}
-  </div><!-- columns -->
+    {% else %}
+    <div class="offset-by-two eigth columns">
+      {% endif %}
+      <h2>About {{ profile.user.get_username }}</h2>
+      {{ profile.about|default:"No Profile"|linebreaks }}
+    </div><!-- columns -->
+
+  {% if user.pk == profile.user.pk %}
   <div class="three columns">
     <ul class="task-list">
       <li><a href="{% url 'dj-auth:pw_change' %}">
@@ -22,5 +28,6 @@
 	  Edit Your Profile</a></li>
     </ul>
   </div>
+  {% endif %}
 </div><!--row-->
 {% endblock %}

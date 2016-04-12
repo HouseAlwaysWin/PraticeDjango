@@ -135,6 +135,10 @@ class ProfileUpdate(
         ProfileGetObjectMixin,UpdateView):
     fields = ('about',)
     model = Profile
+
+class PublicProfileDetail(DetailView):
+    model = Profile
+
     
 class ResendActivationEmail(
         MailContextViewMixin,View):
