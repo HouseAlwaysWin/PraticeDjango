@@ -69,7 +69,7 @@ class User(AbstractBaseUser,
         max_length=254,
         unique=True)
 
-    is_stuff = models.BooleanField(
+    is_staff = models.BooleanField(
         'staff status',
         default=False,
         help_text=(
