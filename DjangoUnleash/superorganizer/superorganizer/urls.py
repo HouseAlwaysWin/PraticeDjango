@@ -24,6 +24,8 @@ from blog import urls as blog_urls
 from contact import urls as contact_urls
 from user import urls as user_urls
 
+admin.site.site_header = 'Startup Organizer Admin'
+admin.site.site_title = 'Startup Organizer Site Admin'
 
 
 urlpatterns = [
