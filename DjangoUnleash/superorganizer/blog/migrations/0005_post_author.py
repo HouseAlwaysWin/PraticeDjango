@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('blog', '0004_post_permissions'),
+        ('user','0003_user_data'),
     ]
 
     operations = [

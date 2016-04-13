@@ -14,20 +14,16 @@ def add_user_data(apps, schema_editor):
     User = apps.get_model('user', 'User')
     andrew_user = User.objects.create(
         email='django@jambonsw.com',
-        password=make_password('hunter2'),
+        password=make_password('aaaaa'),
         is_active=True,
         is_staff=True,
         is_superuser=True)
     andrew_profile = Profile.objects.create(
         user=andrew_user,
-        name='Andrew',
-        slug='andrew',
+        name='Martin',
+        slug='martin',
         about='The author of this site!')
-    # Django Girls is a real and very cool
-    # organization but they are not affiliated
-    # with this book and the email above is *not*
-    # a real one.  Use of their name is for
-    # illustrative purposes only.
+    
     ada_user = User.objects.create(
         email='ada@djangogirls.org',
         password=make_password('aaaaa'),
@@ -65,7 +61,7 @@ def remove_user_data(apps, schema_editor):
     Group = apps.get_model('auth', 'Group')
     Profile = apps.get_model('user', 'Profile')
     User = apps.get_model('user', 'User')
-    Profile.objects.get(slug='andrew').delete()
+    Profile.objects.get(slug='martin').delete()
     Profile.objects.get(
         slug='the_countess').delete()
     User.objects.get(

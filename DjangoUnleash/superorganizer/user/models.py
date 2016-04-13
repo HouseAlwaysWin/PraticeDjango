@@ -82,10 +82,10 @@ class User(AbstractBaseUser,
         help_text=('Designates whether this user should '
                    'be treated as active Unselect this '
                    'instead of deleting accounts.'))
-
+    USERNAME_FIELD = 'email'
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    
 
     def __str__(self):
         return self.email

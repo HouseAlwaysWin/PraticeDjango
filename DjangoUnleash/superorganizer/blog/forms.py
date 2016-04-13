@@ -6,7 +6,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ('author',)
-        fields = '__all__'
+
 
     def clean_slug(self):
         return self.cleaned_data['slug'].lower()
@@ -18,4 +18,4 @@ class PostForm(forms.ModelForm):
         if commit:
             post.save()
             self.save_m2m()
-            return post
+        return post

@@ -13,11 +13,11 @@
     {% else %}
     <div class="offset-by-two eigth columns">
       {% endif %}
-      <h2>About {{ profile.user.get_username }}</h2>
+      <h5>About {{ profile.user.get_username }}</h5>
       {{ profile.about|default:"No Profile"|linebreaks }}
-      {{% if perms.blog.view_future_post and profile.user.blog_posts.all %}
+      {% if perms.blog.view_future_post and profile.user.blog_posts.all %}
       <section>
-	<h3>Blog Post{{ profile.user.published_posts|pluralize }}</h3>
+	<h4>Blog Post{{ profile.user.published_posts|pluralize }}</h4>
 	<ul>
 	  {% for post in profile.user.published_posts %}
 	  <li><a href="{{ post.get_absolute_url }}">

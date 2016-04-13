@@ -36,7 +36,7 @@ class UserCreationForm(
         Profile.objects.update_or_create(
             user=user,
             defaults={
-                'name':slef.cleaned_data['name'],
+                'name':self.cleaned_data['name'],
                 'slug':slugify(
                     self.cleaned_data['name']),
                 })
@@ -58,14 +58,14 @@ class UserCreationForm(
             )
         if name in disallowed:
             raise ValidaionError(
-                "A user with that username"
+                "A user with that name"
                 " already exists"
                 )
         return name
 
     class Meta(BaseUserCreationForm.Meta):
         model = get_user_model()
-        fields = ('username','email')
+        fields = ('name','email')
 
 class ResendActivationEmailForm(
         ActivationMailFormMixin,forms.Form):
