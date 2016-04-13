@@ -43,7 +43,9 @@ class PostList(AllowFuturePermissionMixin,ArchiveIndexView):
     
 @require_authenticated_permission(
     'blog.change_post')
-class PostUpdate(PostFormValidMixin,DateObjectMixin, UpdateView):
+class PostUpdate(PostFormValidMixin,
+                 DateObjectMixin,
+                 UpdateView):
 
     date_field = 'pub_date'
     form_class = PostForm

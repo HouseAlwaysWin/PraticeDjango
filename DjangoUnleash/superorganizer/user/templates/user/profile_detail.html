@@ -18,6 +18,7 @@
       {% if perms.blog.view_future_post and profile.user.blog_posts.all %}
       <section>
 	<h4>Blog Post{{ profile.user.published_posts|pluralize }}</h4>
+	{{ profile.user.blog_posts }}
 	<ul>
 	  {% for post in profile.user.published_posts %}
 	  <li><a href="{{ post.get_absolute_url }}">
