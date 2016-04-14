@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import url
 from django.contrib.messages import success
-from django.contib.admin.options import IS_POPUP_VAR
+from django.contrib.admin.options import IS_POPUP_VAR
 from django.contrib.admin.utils import unquote
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import AdminPasswordChangeForm
@@ -36,6 +36,10 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     list_display_links = ('get_name','email')
+
+    change_password_form = AdminPasswordChangeForm
+    change_user_password_template =(
+        'admin/auth/user/change_password.html')
   
    
 
@@ -90,3 +94,42 @@ class UserAdmin(admin.ModelAdmin):
         if not obj:
             return self.add_fieldsets
         return super().get_fieldsets(request,obj)
+
+    def get_urls(self):
+        password_change = [
+            url(r'^(.+)/password/$',
+                self.admin_site.admin_view(
+                    self.user_change_password),
+                name='auth-user_password_change'),]
+        urls = super().get_urls()
+        urls = password_change + urls
+        return urls
+
+    @method_decorator(sensitive_post_parameters())
+    def user_change_password(
+            self, request, user_id, form_url=''):
+        if not self.has_change_permission(request):
+            raise PermissionDenied
+        user = self.get_object(
+            request,unquote(user_is))
+        if user is None:
+            raise Http404(
+                '{name} object with primary key '
+                '{key} does not exist.'.format(
+                    name=force_text(
+                        self.model._meta.verbose_name),
+                    key=escape(user_id)))
+        if request.method == 'POST':
+            form = self.change_password_form(
+                user,request.POST)
+        if form.is_valid():
+            form.save()
+            change_message = (
+                self.contruct_change_message(
+                    request, form, None))
+            self.log_change(request, user, change_message)
+            success(request, 'Password changed.')
+            update_session_auth_hash(
+                request, form.user)
+            return HttpResponseRedirect('..')
+        
