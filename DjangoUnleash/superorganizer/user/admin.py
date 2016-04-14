@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import User
-
+from .forms import UserCreationForm
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -19,7 +19,8 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     list_display_links = ('get_name','email')
-    
+  
+   
 
     # form view
     fieldsets = (
@@ -40,6 +41,18 @@ class UserAdmin(admin.ModelAdmin):
         )
     filter_horizontal = ('groups','user_permissions',)
 
+    add_fieldsets = (
+        (None, {
+            'classes':('wide',),
+            'fields':(
+                'name',
+                'email',
+                'password1',
+                'password2',)
+            }),
+        )
+    add_form = UserCreationForm
+
     def get_date_joined(self, user):
         return user.profile.joined
     get_date_joined.short_description = 'Joined'
@@ -49,3 +62,14 @@ class UserAdmin(admin.ModelAdmin):
         return user.profile.name
     get_name.short_description = 'Name'
     get_name.admin_order_field = 'profile__name'
+
+    def get_form(self, request, obj=None, **kwargs):
+        if obj is None:
+            kwargs['form']=self.add_form
+        return super().get_form(
+            request, obj, **kwargs)
+
+    def get_fieldsets(self, request, obj=None):
+        if not obj:
+            return self.add_fieldsets
+        return super().get_fieldsets(request,obj)
