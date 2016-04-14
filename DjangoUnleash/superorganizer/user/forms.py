@@ -1,6 +1,9 @@
 import logging
 from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import (
+    UserChangeForm as BaseUserChangeForm,
+    UserCreationForm as BaseUserCreationForm)
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.text import slugify
@@ -66,6 +69,11 @@ class UserCreationForm(
     class Meta(BaseUserCreationForm.Meta):
         model = get_user_model()
         fields = ('name','email')
+
+class UserChangeForm(BaseUserChangeForm):
+    """For UserAdmin"""
+    class Meta(BaseUserChangeForm.Meta):
+        model = get_user_model()
 
 class ResendActivationEmailForm(
         ActivationMailFormMixin,forms.Form):

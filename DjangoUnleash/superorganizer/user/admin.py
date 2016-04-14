@@ -15,14 +15,26 @@ from django.utils.encoding import force_text
 from django.views.decorators.debug import sensitive_post_parameters
 
 
-from .models import User
-from .forms import UserCreationForm
+from .models import (Profile,
+                     User)
+from .forms import (UserCreationForm,
+                    UserChangeForm)
+
+
+class ProfileAdminInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    exclude = ('slug',)
+
+    def view_on_site(self, obj):
+        return obj.get_absolute_url()
 
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     # list view
+    actions = ['make_staff']
     list_display = (
         'get_name',
         'email',
@@ -46,8 +58,7 @@ class UserAdmin(admin.ModelAdmin):
     # form view
     fieldsets = (
         (None, {
-            'classes':('wide',),
-            'fields':('email',)}),
+            'fields':('email','password')}),
         ('Permissions', {
             'classes':('collapse',),
             'fields':(
@@ -73,6 +84,7 @@ class UserAdmin(admin.ModelAdmin):
             }),
         )
     add_form = UserCreationForm
+    form = UserChangeForm
 
     def get_date_joined(self, user):
         return user.profile.joined
@@ -104,6 +116,13 @@ class UserAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         urls = password_change + urls
         return urls
+
+    def get_inline_instances(self, request, obj=None):
+        if obj is None:
+            return tuple()
+        inline_instance = ProfileAdminInline(
+            self.model,self.admin_site)
+        return (inline_instance,)
 
     @method_decorator(sensitive_post_parameters())
     def user_change_password(
@@ -157,3 +176,16 @@ class UserAdmin(admin.ModelAdmin):
             request,
             self.change_user_password_template,
             context)
+    def make_staff(self, request, queryset):
+        rows_updated = queryset.update(
+            is_staff=True)
+        if rows_updated == 1:
+            message = '1 user was'
+        else:
+            message = '{} users were'.format(
+                rows_updated)
+        message += ' successfully made staff.'
+        self.message_user(request, message)
+    make_staff.short_description = (
+        'Allow user to access Admin Site.')
+
