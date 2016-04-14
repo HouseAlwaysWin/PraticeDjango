@@ -111,7 +111,7 @@ class UserAdmin(admin.ModelAdmin):
         if not self.has_change_permission(request):
             raise PermissionDenied
         user = self.get_object(
-            request,unquote(user_is))
+            request,unquote(user_id))
         if user is None:
             raise Http404(
                 '{name} object with primary key '
@@ -122,14 +122,38 @@ class UserAdmin(admin.ModelAdmin):
         if request.method == 'POST':
             form = self.change_password_form(
                 user,request.POST)
-        if form.is_valid():
-            form.save()
-            change_message = (
-                self.contruct_change_message(
-                    request, form, None))
-            self.log_change(request, user, change_message)
-            success(request, 'Password changed.')
-            update_session_auth_hash(
-                request, form.user)
+            if form.is_valid():
+                form.save()
+                change_message = (
+                    self.contruct_change_message(
+                        request, form, None))
+                self.log_change(request, user, change_message)
+                success(request, 'Password changed.')
+                update_session_auth_hash(
+                    request, form.user)
             return HttpResponseRedirect('..')
         
+        else:
+            form = self.change_password_form(user)
+
+        context = {
+            'title':'Change password: {}'.format(
+                escape(user.get_username())),
+            'form_url':form_url,
+            'form':form,
+            'is_popup':(
+                IS_POPUP_VAR in request.POST
+                or IS_POPUP_VAR in request.GET),
+            'opts':self.model._meta,
+            'original':user,
+        }
+
+        context.update(
+            admin.site.each_context(request))
+
+        request.current_app = self.admin_site.name
+
+        return TemplateResponse(
+            request,
+            self.change_user_password_template,
+            context)
