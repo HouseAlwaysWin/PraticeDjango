@@ -59,7 +59,7 @@ class Command(BaseCommand):
                 'with --noinput will not be able '
                 'to log in until they\'re given '
                 'a valid password.'.format(
-                    self.User.USERNAME_FIELD))
+                    self.User.USERNAME_FIELD)))
 
             
     def clean_value(self, field, value, halt=True):
@@ -154,7 +154,34 @@ class Command(BaseCommand):
                         name,
                         halt=False)
             try:
-
+                if not username:
+                    username = (
+                        self.get_field_interactive(
+                            self.User,
+                            self.username_field))
+                if not name:
+                    name = self.get_field_interactive(
+                        Profile,
+                        self.name_field)
+                while password is None:
+                    password = getpass.getpass()
+                    password2 = getpass.getpass(
+                        force_str(
+                            'Password(again): '))
+                    if password != password2:
+                        self.stderr.write(
+                            "Error: Your "
+                            "passwords didn't "
+                            "match.")
+                        password = None
+                        continue
+                    if password.strip() == '':  
+                        self.stderr.write(
+                            "Error: Blank passwords "
+                            "aren't allowed.")
+                        password = None
+                        continue
+                return (name,username, password)
 
             except KeyboardInterrupt:
                 self.stderr.write(
