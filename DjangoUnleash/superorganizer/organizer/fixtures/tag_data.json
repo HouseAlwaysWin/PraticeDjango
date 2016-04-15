@@ -1,0 +1,34 @@
+[
+{
+  "fields": {
+    "name": "augmented reality",
+    "slug": "augmented-reality"
+  },
+  "pk": 1,
+  "model": "organizer.tag"
+},
+{
+  "fields": {
+    "name": "newstartup",
+    "slug": "newstartup"
+  },
+  "pk": 2,
+  "model": "organizer.tag"
+},
+{
+  "fields": {
+    "name": "django",
+    "slug": "django"
+  },
+  "pk": 3,
+  "model": "organizer.tag"
+},
+{
+  "fields": {
+    "name": "hellow",
+    "slug": "hellow"
+  },
+  "pk": 4,
+  "model": "organizer.tag"
+}
+]

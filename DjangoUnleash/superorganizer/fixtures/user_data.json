@@ -1,0 +1,104 @@
+[
+{
+  "pk": 1,
+  "model": "auth.group",
+  "fields": {
+    "name": "contributors",
+    "permissions": [
+      28,
+      29
+    ]
+  }
+},
+{
+  "pk": 1,
+  "model": "user.user",
+  "fields": {
+    "is_superuser": true,
+    "is_active": true,
+    "password": "pbkdf2_sha256$20000$VfclfayQKa15$CXvA25hEHbETwgHyozX7sm6Ge79jC21tdWpuIfkiLjo=",
+    "email": "django@jambonsw.com",
+    "user_permissions": [],
+    "last_login": "2016-04-13T08:46:41Z",
+    "groups": [],
+    "is_staff": true
+  }
+},
+{
+  "pk": 2,
+  "model": "user.user",
+  "fields": {
+    "is_superuser": true,
+    "is_active": true,
+    "password": "pbkdf2_sha256$20000$3EzeMbRjJCbF$hhA2Lxf+Y9UVoyOEKE5Ka4rUGRJNUzm1Ad9mL4M1I5Y=",
+    "email": "ada@djangogirls.org",
+    "user_permissions": [],
+    "last_login": "2016-04-13T08:46:16Z",
+    "groups": [
+      1
+    ],
+    "is_staff": true
+  }
+},
+{
+  "pk": 3,
+  "model": "user.user",
+  "fields": {
+    "is_superuser": false,
+    "is_active": true,
+    "password": "",
+    "email": "alex@aa.com",
+    "user_permissions": [],
+    "last_login": "2016-04-07T01:36:26Z",
+    "groups": [],
+    "is_staff": true
+  }
+},
+{
+  "pk": 4,
+  "model": "user.user",
+  "fields": {
+    "is_superuser": false,
+    "is_active": false,
+    "password": "pbkdf2_sha256$20000$I574rEoi5UFO$ehAAv021OjXnywXL4+SMAQcPCBUswVBTtb7EYBE3NQ0=",
+    "email": "bitch@cunt.com",
+    "user_permissions": [],
+    "last_login": null,
+    "groups": [],
+    "is_staff": true
+  }
+},
+{
+  "pk": 1,
+  "model": "user.profile",
+  "fields": {
+    "name": "Martin",
+    "user": 1,
+    "about": "The author of this site!",
+    "slug": "martin",
+    "joined": "2016-04-13T07:29:54.684Z"
+  }
+},
+{
+  "pk": 2,
+  "model": "user.profile",
+  "fields": {
+    "name": "Ada Lovelace",
+    "user": 2,
+    "about": "Django Girls is a non-profit organization that empowers and helps women to organize free, one-day programming workshops by providing tools, resources and support. It was born in Berlin and started by two Polish girls: Ola Sitarska and Ola Sendecka.",
+    "slug": "the_countess",
+    "joined": "2016-04-13T07:29:54.700Z"
+  }
+},
+{
+  "pk": 3,
+  "model": "user.profile",
+  "fields": {
+    "name": "bitch ",
+    "user": 4,
+    "about": "",
+    "slug": "bitch",
+    "joined": "2016-04-14T01:54:00.321Z"
+  }
+}
+]
