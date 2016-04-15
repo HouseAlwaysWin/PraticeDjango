@@ -43,7 +43,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=email,
             is_active=True,
-            is_staff=is_staffm,
+            is_staff=is_staff,
             is_superuser=is_superuser,
             **kwargs)
         user.set_password(password)
